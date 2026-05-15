@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/media/*"
+  to = "/.netlify/functions/media?url=https://atlas-media.oss-us-west-1.aliyuncs.com/:splat"
+  status = 200
+  force = true

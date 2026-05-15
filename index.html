@@ -1,0 +1,4732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COSTA STUDIO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:#e8162a; --red2:rgba(232,22,42,0.12); --red3:rgba(232,22,42,0.06);
+  --red4:rgba(232,22,42,0.25); --red5:rgba(232,22,42,0.4);
+  --blk:#05050a; --s1:rgba(255,255,255,0.04); --s2:rgba(255,255,255,0.07);
+  --s3:rgba(255,255,255,0.11); --w:rgba(242,242,248,1);
+  --w70:rgba(242,242,248,0.7); --w40:rgba(242,242,248,0.4);
+  --w15:rgba(242,242,248,0.15); --w08:rgba(242,242,248,0.08);
+  --bd:rgba(255,255,255,0.09); --bdr:rgba(232,22,42,0.28);
+  
+  --gb:blur(32px) saturate(200%); --gbsm:blur(16px) saturate(170%);
+  --r:14px; --rsm:9px; --fn:'Bebas Neue',cursive;
+  --fm:'Space Mono',monospace; --fb:'DM Sans',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--blk);color:var(--w);font-family:var(--fb);font-size:15px;overflow-x:hidden;min-height:100vh;}
+
+/* ── SCANLINES ── */
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:0;}
+
+/* ── BG ── */
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(232,22,42,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(232,22,42,0.035) 1px,transparent 1px);background-size:56px 56px;animation:gp 10s ease-in-out infinite;}
+@keyframes gp{0%,100%{opacity:.5}50%{opacity:1}}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);animation:of 14s ease-in-out infinite;}
+.o1{width:800px;height:800px;background:radial-gradient(circle,rgba(232,22,42,0.08) 0%,transparent 65%);top:-250px;left:-200px;}
+.o2{width:600px;height:600px;background:radial-gradient(circle,rgba(180,10,30,0.06) 0%,transparent 65%);bottom:-150px;right:-150px;animation-delay:-7s;}
+.o3{width:400px;height:400px;background:radial-gradient(circle,rgba(232,22,42,0.04) 0%,transparent 65%);top:45%;left:55%;animation-delay:-3.5s;}
+@keyframes of{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.06)}66%{transform:translate(-25px,35px) scale(.94)}}
+
+/* ── APP SHELL ── */
+.app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── NAVBAR ── */
+.nav{position:sticky;top:0;z-index:100;height:68px;display:flex;align-items:center;gap:20px;padding:0 36px;background:rgba(5,5,10,0.65);backdrop-filter:blur(48px) saturate(220%);border-bottom:1px solid var(--bd);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-mark{width:36px;height:36px;background:var(--red);clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));display:flex;align-items:center;justify-content:center;animation:mg 3s ease-in-out infinite;}
+@keyframes mg{0%,100%{box-shadow:0 0 0 0 rgba(232,22,42,.5)}50%{box-shadow:0 0 24px 6px rgba(232,22,42,.15)}}
+.nav-mark svg{width:15px;height:15px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.nav-wordmark{font-family:var(--fn);font-size:22px;letter-spacing:.1em;color:var(--w);}
+.nav-wordmark em{color:var(--red);font-style:normal;}
+.nav-chip{font-family:var(--fm);font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--red);padding:4px 12px;border:1px solid var(--bdr);background:var(--red3);border-radius:4px;}
+.nav-sp{flex:1;}
+.nav-st{display:flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10px;color:var(--w40);letter-spacing:.08em;}
+.sd{width:7px;height:7px;border-radius:50%;background:#444;transition:all .3s;}
+.sd.on{background:var(--red);box-shadow:0 0 10px var(--red);animation:sp 2s infinite;}
+.sd.er{background:var(--red);}
+@keyframes sp{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-logo-wrap{display:flex;align-items:center;gap:4px;position:relative;}
+.logo-edit-btn{width:22px;height:22px;background:none;border:none;cursor:pointer;color:var(--w40);display:flex;align-items:center;justify-content:center;border-radius:4px;transition:all .2s;opacity:0;flex-shrink:0;}
+.logo-edit-btn:hover{color:var(--red);opacity:1 !important;background:var(--red3);}
+.logo-edit-btn svg{width:10px;height:10px;}
+.nav-logo-wrap:hover .logo-edit-btn{opacity:.35;}
+/* بعد 3 كليكات بيظهر بشكل كامل */
+.logo-edit-btn.visible{opacity:.35;}
+
+/* Balance panel */
+.nav-bal{font-family:var(--fm);font-size:12px;color:var(--w70);background:var(--s2);border:1px solid var(--bd);padding:7px 16px;border-radius:6px;letter-spacing:.04em;cursor:pointer;transition:border-color .2s;position:relative;}
+.nav-bal:hover{border-color:var(--bdr);}
+.nav-bal strong{color:var(--w);}
+.bal-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:rgba(8,8,14,.96);backdrop-filter:blur(24px);border:1px solid var(--bd);border-radius:10px;padding:14px;min-width:240px;z-index:50;display:none;}
+.bal-dropdown.show{display:block;}
+.bal-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;}
+.bal-row:last-child{border:none;}
+.bal-prov{font-family:var(--fm);font-size:10px;color:var(--w40);letter-spacing:.1em;text-transform:uppercase;}
+.bal-amount{font-family:var(--fm);font-size:13px;color:var(--w);font-weight:700;}
+.bal-amount.low{color:var(--red);}
+.bal-amount.loading{color:var(--w40);font-size:10px;}
+.bal-total{font-family:var(--fm);font-size:11px;color:var(--red);letter-spacing:.15em;text-transform:uppercase;padding-top:8px;margin-top:4px;border-top:1px solid var(--bdr);}
+
+/* Atlas note */
+.atlas-note{font-size:10px;color:var(--w40);font-family:var(--fm);letter-spacing:.05em;margin-top:6px;line-height:1.5;padding:8px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.1);border-radius:6px;}
+
+
+/* ── TABS ── */
+.tabs{display:flex;gap:0;padding:28px 36px 0;position:relative;}
+.tabs::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--bd);}
+.tab-btn{font-family:var(--fn);font-size:22px;letter-spacing:.1em;color:var(--w40);padding:14px 28px;cursor:pointer;background:none;border:none;border-bottom:2px solid transparent;transition:all .25s;position:relative;z-index:1;}
+.tab-btn:hover{color:var(--w70);}
+.tab-btn.active{color:var(--w);border-bottom-color:var(--red);}
+.tab-btn .tab-cost{font-family:var(--fm);font-size:9px;letter-spacing:.2em;color:var(--red);display:block;margin-top:2px;text-transform:uppercase;}
+
+/* ── HERO ── */
+.hero{padding:64px 36px 40px;text-align:center;animation:fu .9s .05s both;}
+@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-eye{font-family:var(--fm);font-size:11px;letter-spacing:.5em;color:var(--red);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.hero-eye::before,.hero-eye::after{content:'';width:44px;height:1px;background:var(--bdr);}
+.hero-h1{font-family:var(--fn);font-size:clamp(72px,11vw,140px);line-height:.88;letter-spacing:.02em;margin-bottom:20px;text-shadow:0 0 80px rgba(232,22,42,.15);}
+.hero-h1 .ac{color:var(--red);}
+.hero-sub{font-size:17px;color:var(--w40);max-width:520px;margin:0 auto 36px;line-height:1.75;}
+.model-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.mp{font-family:var(--fm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:7px 16px;background:var(--s2);border:1px solid var(--bd);border-radius:100px;color:var(--w70);cursor:pointer;transition:all .2s;}
+.mp:hover,.mp.on{background:var(--red2);border-color:var(--bdr);color:var(--w);}
+
+/* ── MAIN LAYOUT ── */
+.main{max-width:1240px;margin:0 auto;padding:32px 24px 80px;width:100%;}
+.studio-grid{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start;}
+@media(max-width:960px){.studio-grid{grid-template-columns:1fr;}}
+
+/* ── PANEL LABEL ── */
+.pl{font-family:var(--fm);font-size:10px;letter-spacing:.4em;color:var(--red);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.pl::after{content:'';flex:1;height:1px;background:var(--bd);}
+
+/* ── API KEY BANNER ── */
+.api-banner{background:var(--red3);border:1px solid var(--bdr);border-radius:var(--r);padding:20px 22px;margin-bottom:22px;animation:fu .7s .1s both;}
+.api-row{display:flex;gap:8px;margin-top:10px;}
+.api-in{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);color:var(--w);font-family:var(--fm);font-size:11px;padding:11px 16px;outline:none;letter-spacing:.04em;transition:border-color .2s;}
+.api-in::placeholder{color:var(--w40);}
+.api-in:focus{border-color:var(--bdr);}
+.api-save{background:var(--red);border:none;border-radius:var(--rsm);color:#000;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.2em;padding:11px 18px;cursor:pointer;text-transform:uppercase;transition:opacity .2s;white-space:nowrap;}
+.api-save:hover{opacity:.85;}
+.api-note{font-size:12px;color:var(--w40);margin-top:8px;line-height:1.6;}
+.api-note a{color:var(--red);text-decoration:none;}
+
+/* ── PROVIDER SECTION ── */
+.providers-section{margin-bottom:22px;}
+.provider-list{display:flex;flex-direction:column;gap:10px;}
+.provider-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px 18px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;transition:border-color .2s;}
+.provider-card:hover{border-color:var(--bdr);}
+.provider-card.active-prov{border-color:var(--red);background:var(--red3);}
+.prov-info{}
+.prov-name{font-family:var(--fn);font-size:20px;letter-spacing:.06em;color:var(--w);margin-bottom:2px;}
+.prov-url{font-family:var(--fm);font-size:10px;color:var(--w40);letter-spacing:.05em;}
+.prov-status{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:4px 10px;border-radius:4px;}
+.prov-status.connected{background:rgba(232,22,42,.12);color:var(--red);border:1px solid rgba(232,22,42,.25);}
+.prov-status.disconnected{background:var(--s2);color:var(--w40);border:1px solid var(--bd);}
+.prov-del{background:rgba(232,22,42,.1);border:1px solid var(--bdr);border-radius:var(--rsm);color:var(--red);font-family:var(--fm);font-size:10px;padding:6px 12px;cursor:pointer;letter-spacing:.1em;text-transform:uppercase;transition:all .2s;}
+.prov-del:hover{background:var(--red);color:#000;}
+
+.add-prov-form{background:var(--s1);border:1px dashed var(--bd);border-radius:var(--r);padding:18px;}
+.add-prov-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.add-prov-grid input{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);color:var(--w);font-family:var(--fm);font-size:11px;padding:10px 14px;outline:none;transition:border-color .2s;letter-spacing:.03em;}
+.add-prov-grid input::placeholder{color:var(--w40);}
+.add-prov-grid input:focus{border-color:var(--bdr);}
+.add-prov-row{display:flex;gap:8px;margin-top:8px;}
+.add-prov-row input{flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);color:var(--w);font-family:var(--fm);font-size:11px;padding:10px 14px;outline:none;transition:border-color .2s;}
+.add-prov-row input::placeholder{color:var(--w40);}
+.add-prov-row input:focus{border-color:var(--bdr);}
+.add-prov-btn{background:var(--red);border:none;border-radius:var(--rsm);color:#000;font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.2em;padding:10px 18px;cursor:pointer;text-transform:uppercase;white-space:nowrap;}
+
+/* ── MODEL SELECTOR ── */
+.model-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+.mb{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);padding:15px 12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);text-align:center;position:relative;overflow:hidden;}
+.mb::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,22,42,.09),transparent);opacity:0;transition:opacity .22s;}
+.mb:hover::before,.mb.on::before{opacity:1;}
+.mb:hover{border-color:var(--bdr);transform:translateY(-1px);box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.mb.on{border-color:var(--red);background:rgba(232,22,42,.09);box-shadow:0 0 0 1px rgba(232,22,42,.15);}
+.mb-tag{font-family:var(--fm);font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:var(--w40);display:block;margin-bottom:4px;}
+.mb.on .mb-tag{color:var(--red);}
+.mb-name{font-family:var(--fn);font-size:17px;letter-spacing:.05em;color:var(--w70);display:block;margin-bottom:3px;}
+.mb.on .mb-name{color:var(--w);}
+.mb-price{font-family:var(--fm);font-size:10px;color:var(--w40);}
+.mb.on .mb-price{color:var(--red);}
+.mb-star{position:absolute;top:7px;right:7px;font-family:var(--fm);font-size:7px;color:var(--red);letter-spacing:.1em;}
+
+/* ── CINEMA STUDIO TAB ── */
+.tab-cinema {
+  position: relative;
+  color: var(--red) !important;
+  border-bottom-color: transparent !important;
+}
+.tab-cinema:hover { color: #ffd740 !important; }
+.tab-cinema.active {
+  color: #fff !important;
+  border-bottom-color: var(--red) !important;
+  text-shadow: 0 0 20px rgba(255,196,0,.4);
+}
+.cinema-star-wrap {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.cinema-star {
+  width: 14px; height: 14px;
+  fill: var(--red);
+  filter: drop-shadow(0 0 4px rgba(255,196,0,.8));
+  animation: starSpin 3s linear infinite, starPulse 1.5s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+.tab-cinema.active .cinema-star {
+  fill: #fff;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,.9));
+}
+@keyframes starSpin {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes starPulse {
+  from { filter: drop-shadow(0 0 3px rgba(255,196,0,.6)); }
+  to   { filter: drop-shadow(0 0 10px rgba(255,196,0,1)); }
+}
+
+/* ── CINEMA STUDIO LAYOUT ── */
+.cinema-wrap {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px) { .cinema-wrap { grid-template-columns: 1fr; } }
+
+/* Characters bar */
+.cinema-chars {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cinema-chars-label {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .3em;
+  color: var(--w40); text-transform: uppercase; margin-right: 4px;
+}
+.char-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 100px; padding: 5px 12px 5px 6px;
+  cursor: pointer; transition: all .2s; position: relative;
+}
+.char-chip:hover { border-color: var(--bdr); }
+.char-chip .char-avatar {
+  width: 22px; height: 22px; border-radius: 50%;
+  object-fit: cover; background: var(--red3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fn); font-size: 11px; color: var(--red);
+  overflow: hidden; flex-shrink: 0;
+}
+.char-chip .char-name {
+  font-family: var(--fm); font-size: 10px; color: var(--w70);
+  letter-spacing: .05em; max-width: 80px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.char-chip .char-tag {
+  font-family: var(--fm); font-size: 9px; color: var(--red);
+  letter-spacing: .1em;
+}
+.char-chip .char-del {
+  position: absolute; top: -4px; right: -4px;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--red); color: #000; border: none;
+  font-size: 8px; cursor: pointer; display: none;
+  align-items: center; justify-content: center; line-height: 1;
+}
+.char-chip:hover .char-del { display: flex; }
+.add-char-btn {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .2em;
+  padding: 6px 14px; background: var(--red3);
+  border: 1px solid var(--bdr); border-radius: 100px;
+  color: var(--red); cursor: pointer; transition: all .2s; white-space: nowrap;
+}
+.add-char-btn:hover { background: var(--red4); }
+
+/* Character modal */
+.char-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,.7); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  animation: fu .2s both;
+}
+.char-modal {
+  background: rgba(8,8,14,.97); border: 1px solid var(--bd);
+  border-radius: 16px; padding: 28px; width: min(480px,90vw);
+  max-height: 80vh; overflow-y: auto;
+}
+.char-modal h3 {
+  font-family: var(--fn); font-size: 22px; letter-spacing: .08em;
+  color: var(--w); margin-bottom: 20px;
+}
+.char-form-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+}
+.char-in {
+  background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--rsm); color: var(--w);
+  font-family: var(--fb); font-size: 13px;
+  padding: 10px 14px; outline: none; width: 100%;
+  transition: border-color .2s;
+}
+.char-in:focus { border-color: var(--bdr); }
+.char-in::placeholder { color: var(--w40); }
+.char-img-upload {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 2px dashed var(--bd); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; transition: border-color .2s;
+  background: var(--s1); overflow: hidden; position: relative;
+}
+.char-img-upload:hover { border-color: var(--bdr); }
+.char-img-upload img { width: 100%; height: 100%; object-fit: cover; }
+.char-img-upload span {
+  font-family: var(--fm); font-size: 8px; color: var(--w40);
+  letter-spacing: .15em; text-align: center; padding: 0 4px;
+}
+.char-modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.char-save-btn {
+  flex: 1; background: var(--red); border: none; border-radius: var(--rsm);
+  color: #000; font-family: var(--fm); font-size: 10px; font-weight: 700;
+  letter-spacing: .2em; padding: 12px; cursor: pointer;
+}
+.char-cancel-btn {
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: var(--rsm); color: var(--w70);
+  font-family: var(--fm); font-size: 10px; letter-spacing: .15em;
+  padding: 12px 18px; cursor: pointer;
+}
+
+/* Cinema left panel */
+.cinema-left { display: flex; flex-direction: column; gap: 0; }
+
+/* Cinema panels */
+.cinema-panel {
+  background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--r); padding: 18px 20px; margin-bottom: 14px;
+}
+.cinema-panel-title {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .3em;
+  color: var(--red); text-transform: uppercase;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.cinema-panel-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(255,196,0,.3), transparent);
+}
+
+/* Camera controls grid */
+.cam-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.cam-item label {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .15em;
+  color: var(--w40); text-transform: uppercase; display: block; margin-bottom: 5px;
+}
+
+/* Genre pills */
+.genre-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.genre-pill {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .15em;
+  text-transform: uppercase; padding: 5px 12px;
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 100px; color: var(--w40); cursor: pointer; transition: all .2s;
+}
+.genre-pill:hover { color: var(--w70); }
+.genre-pill.on { background: rgba(255,196,0,.1); border-color: rgba(255,196,0,.4); color: var(--red); }
+
+/* Cinema prompt */
+.cinema-prompt-ta {
+  width: 100%; min-height: 180px; background: var(--s1);
+  border: 1px solid var(--bd); border-radius: var(--r);
+  color: var(--w); font-family: var(--fb); font-size: 14px;
+  line-height: 1.8; padding: 16px; resize: none; outline: none;
+  transition: border-color .2s; caret-color: var(--red);
+}
+.cinema-prompt-ta:focus { border-color: rgba(255,196,0,.4); box-shadow: 0 0 0 3px rgba(255,196,0,.06); }
+.cinema-prompt-ta::placeholder { color: var(--w40); }
+
+/* Cinema refs */
+.cinema-refs-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  margin-bottom: 8px;
+}
+.cinema-ref-slot {
+  aspect-ratio: 1; border: 1px dashed var(--bd);
+  border-radius: var(--rsm); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 4px; position: relative;
+  overflow: hidden; transition: border-color .2s; background: var(--s1);
+}
+.cinema-ref-slot:hover { border-color: rgba(255,196,0,.4); }
+.cinema-ref-slot img, .cinema-ref-slot video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.cinema-ref-slot .ref-type-badge {
+  position: absolute; top: 4px; left: 4px;
+  font-family: var(--fm); font-size: 7px; letter-spacing: .1em;
+  background: rgba(255,196,0,.9); color: #000;
+  padding: 2px 5px; border-radius: 3px;
+}
+.cinema-ref-slot .crs-label {
+  font-family: var(--fm); font-size: 8px; color: var(--w40);
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.cinema-ref-slot .crs-rmv {
+  position: absolute; top: 4px; right: 4px;
+  background: rgba(232,22,42,.9); color: #fff;
+  border: none; border-radius: 50%; width: 16px; height: 16px;
+  font-size: 9px; cursor: pointer; display: none;
+  align-items: center; justify-content: center;
+}
+.cinema-ref-slot:hover .crs-rmv { display: flex; }
+
+/* Cinema add-ref buttons */
+.cinema-ref-add-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.cra-btn {
+  flex: 1; font-family: var(--fm); font-size: 9px; letter-spacing: .15em;
+  padding: 8px; background: var(--s2); border: 1px solid var(--bd);
+  border-radius: var(--rsm); color: var(--w40); cursor: pointer; transition: all .2s;
+}
+.cra-btn:hover { border-color: rgba(255,196,0,.4); color: var(--red); }
+
+/* Cinema generate */
+.cinema-gen-btn {
+  width: 100%; padding: 18px; background: linear-gradient(135deg,#b8860b,#ffd700,#b8860b);
+  background-size: 200% 100%; border: none; border-radius: var(--r);
+  color: #000; font-family: var(--fn); font-size: 24px; letter-spacing: .12em;
+  cursor: pointer; position: relative; overflow: hidden; transition: all .3s;
+  animation: goldShimmer 3s linear infinite;
+}
+@keyframes goldShimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.cinema-gen-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,196,0,.3); }
+.cinema-gen-btn.ld { opacity: .7; pointer-events: none; }
+
+/* Cinema mode badge */
+.cinema-mode-badge {
+  font-family: var(--fm); font-size: 9px; letter-spacing: .2em;
+  padding: 5px 14px; background: rgba(255,196,0,.08);
+  border: 1px solid rgba(255,196,0,.25); border-radius: 100px;
+  color: var(--red); display: none; margin-bottom: 10px;
+}
+
+/* Cinema output right panel — reuse existing out-panel styles */
+.cinema-out { position: sticky; top: 88px; }
+.cinema-cost-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; background: var(--s1); border: 1px solid var(--bd);
+  border-radius: var(--rsm); margin-bottom: 12px;
+  font-family: var(--fm); font-size: 11px;
+}
+.cinema-cost-bar .ccb-label { color: var(--w40); letter-spacing: .15em; }
+.cinema-cost-bar .ccb-val { color: var(--red); font-size: 14px; }
+
+/* Mode toggle IMAGE/VIDEO */
+.cinema-mode-toggle {
+  display: flex; gap: 0; background: var(--s1);
+  border: 1px solid var(--bd); border-radius: var(--rsm);
+  overflow: hidden; margin-bottom: 14px;
+}
+.cmt-btn {
+  flex: 1; font-family: var(--fm); font-size: 10px; letter-spacing: .2em;
+  padding: 9px; background: none; border: none;
+  color: var(--w40); cursor: pointer; transition: all .2s;
+}
+.cmt-btn.on { background: var(--s2); color: var(--red); }
+.mcat-btn{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:5px 13px;background:var(--s1);border:1px solid var(--bd);border-radius:100px;color:var(--w40);cursor:pointer;transition:all .2s;}
+.mcat-btn:hover{color:var(--w70);}
+.mcat-btn.active{background:var(--red3);border-color:var(--bdr);color:var(--red);}
+.mb.mhidden{display:none !important;}
+
+/* ── PROMPT ── */
+.prompt-wrap{position:relative;margin-bottom:16px;}
+.prompt-ta{width:100%;min-height:150px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);color:var(--w);font-family:var(--fb);font-size:15px;line-height:1.75;padding:18px;resize:none;outline:none;transition:border-color .2s,box-shadow .2s;caret-color:var(--red);}
+.prompt-ta::placeholder{color:var(--w40);}
+.prompt-ta:focus{border-color:var(--bdr);box-shadow:0 0 0 3px rgba(232,22,42,.06);}
+.char-count{position:absolute;bottom:12px;right:14px;font-family:var(--fm);font-size:10px;color:var(--w40);}
+
+/* ── IMAGE REFS ── */
+.ref-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+.ref-slot{aspect-ratio:1;border:1px dashed var(--bd);border-radius:var(--rsm);background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.ref-slot:hover{border-color:var(--bdr);background:var(--red3);}
+.ref-slot svg{width:20px;height:20px;stroke:var(--w40);}
+.ref-slot span{font-size:9px;color:var(--w40);font-family:var(--fm);letter-spacing:.1em;text-transform:uppercase;}
+.ref-slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.rmv{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.85);border-radius:50%;display:none;align-items:center;justify-content:center;cursor:pointer;color:var(--w);font-size:10px;z-index:2;}
+.ref-slot:hover .rmv{display:flex;}
+
+/* ── SETTINGS ROW ── */
+.settings-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;}
+.sg label{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--w40);display:block;margin-bottom:6px;}
+.sg select{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rsm);color:var(--w);font-family:var(--fm);font-size:12px;padding:10px 12px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23666' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color .2s;}
+.sg select:focus{border-color:var(--bdr);}
+
+/* ── AUDIO TOGGLE ── */
+.aud-row{display:flex;align-items:center;justify-content:space-between;background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);padding:11px 16px;cursor:pointer;margin-bottom:16px;transition:border-color .2s;}
+.aud-row:hover{border-color:var(--bdr);}
+.aud-lbl{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--w70);}
+.aud-lbl svg{width:17px;height:17px;stroke:var(--w40);}
+.tsw{width:38px;height:21px;background:var(--bd);border-radius:11px;position:relative;transition:background .25s;flex-shrink:0;}
+.tsw::after{content:'';position:absolute;width:15px;height:15px;background:var(--w);border-radius:50%;top:3px;left:3px;transition:transform .25s;}
+.tsw.on{background:var(--red);}
+.tsw.on::after{transform:translateX(17px);}
+
+/* ── COST PREVIEW ── */
+.cost-bar{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-family:var(--fm);}
+.cost-bar .cl{font-size:10px;color:var(--w40);letter-spacing:.15em;text-transform:uppercase;}
+.cost-bar .cv{font-size:16px;color:var(--w);}
+.cost-bar .cv .gr{color:var(--red);}
+
+/* ── GEN BUTTON ── */
+.gen-btn{width:100%;background:var(--red);border:none;border-radius:var(--r);color:#000;font-family:var(--fn);font-size:24px;letter-spacing:.18em;padding:20px 24px;cursor:pointer;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.4,0,.2,1);clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,13px 100%,0 calc(100% - 13px));}
+.gen-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.22),transparent);opacity:0;transition:opacity .3s;}
+.gen-btn:hover::before{opacity:1;}
+.gen-btn:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(232,22,42,.38),0 4px 14px rgba(232,22,42,.22);}
+.gen-btn:active{transform:translateY(0);}
+.gen-btn.ld{background:rgba(232,22,42,.5);cursor:not-allowed;pointer-events:none;}
+.gen-inner{display:flex;align-items:center;justify-content:center;gap:14px;}
+.gen-btn svg{width:22px;height:22px;}
+.spin{width:20px;height:20px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.gen-btn.ld .spin{display:block;}
+.gen-btn.ld .gi{display:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── OUTPUT PANEL ── */
+.out-panel{position:sticky;top:88px;}
+.out-screen{aspect-ratio:9/16;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);position:relative;overflow:hidden;margin-bottom:12px;}
+.out-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;}
+.out-ph svg{width:52px;height:52px;stroke:var(--w15);}
+.out-ph p{font-family:var(--fm);font-size:11px;letter-spacing:.25em;color:var(--w40);text-transform:uppercase;text-align:center;line-height:1.9;}
+.out-video{width:100%;height:100%;object-fit:cover;display:none;}
+.out-video.show{display:block;}
+.out-img{width:100%;height:100%;object-fit:cover;display:none;}
+.out-img.show{display:block;}
+.prog-ov{position:absolute;inset:0;background:rgba(5,5,10,.88);display:none;flex-direction:column;align-items:center;justify-content:center;gap:22px;}
+.prog-ov.show{display:flex;}
+.prog-ring{width:80px;height:80px;position:relative;}
+.prog-ring svg{width:80px;height:80px;transform:rotate(-90deg);}
+.prog-ring circle{fill:none;stroke-width:2;}
+.pr-tr{stroke:var(--w08);}
+.pr-fl{stroke:var(--red);stroke-dasharray:0 226;transition:stroke-dasharray .5s;stroke-linecap:round;}
+.prog-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:15px;color:var(--w);font-weight:700;}
+.prog-st{font-family:var(--fm);font-size:10px;letter-spacing:.25em;color:var(--w40);text-transform:uppercase;text-align:center;}
+.out-corner{position:absolute;top:12px;left:12px;font-family:var(--fm);font-size:9px;letter-spacing:.2em;color:var(--w70);background:rgba(5,5,10,.75);padding:4px 11px;border-radius:4px;border:1px solid var(--bd);text-transform:uppercase;}
+.out-corner.red{background:rgba(232,22,42,.18);border-color:var(--bdr);color:var(--red);}
+
+.out-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.ob{background:var(--s2);border:1px solid var(--bd);border-radius:var(--rsm);color:var(--w70);font-family:var(--fm);font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:12px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.ob svg{width:14px;height:14px;}
+.ob:hover{border-color:var(--bdr);color:var(--w);background:var(--red3);}
+.ob.pri{background:var(--red2);border-color:var(--bdr);color:var(--red);grid-column:1/-1;}
+.ob.pri:hover{background:var(--red);color:#000;}
+.ob:disabled{opacity:.4;cursor:not-allowed;pointer-events:none;}
+
+.out-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.meta-it{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);padding:12px;text-align:center;}
+.meta-k{font-family:var(--fm);font-size:8px;letter-spacing:.2em;color:var(--w40);text-transform:uppercase;display:block;margin-bottom:4px;}
+.meta-v{font-family:var(--fm);font-size:13px;color:var(--w);}
+
+/* ── HISTORY ── */
+.hist-sec{margin-top:44px;}
+.hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px;margin-top:12px;}
+.hi{background:var(--s1);border:1px solid var(--bd);border-radius:var(--rsm);overflow:hidden;cursor:pointer;transition:all .2s;}
+.hi:hover{border-color:var(--bdr);transform:translateY(-2px);box-shadow:0 8px 26px rgba(0,0,0,.3);}
+.hi-thumb{width:100%;aspect-ratio:9/16;background:var(--s2);position:relative;overflow:hidden;}
+.hi-thumb video,.hi-thumb img{width:100%;height:100%;object-fit:cover;}
+.hi-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
+.hi-ph svg{width:24px;height:24px;stroke:var(--w15);}
+.hi-info{padding:10px;}
+.hi-model{font-family:var(--fm);font-size:8px;letter-spacing:.2em;color:var(--red);text-transform:uppercase;margin-bottom:4px;}
+.hi-prompt{font-size:11px;color:var(--w70);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hi-cost{font-family:var(--fm);font-size:10px;color:var(--w40);margin-top:4px;}
+.hi-empty{grid-column:1/-1;text-align:center;padding:40px;font-family:var(--fm);font-size:11px;letter-spacing:.2em;color:var(--w40);text-transform:uppercase;}
+
+/* ── TOAST ── */
+.toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;}
+.toast{background:rgba(18,18,24,.96);border:1px solid var(--bd);border-radius:100px;padding:12px 22px;font-family:var(--fm);font-size:11px;letter-spacing:.1em;color:var(--w70);white-space:nowrap;animation:ti .3s cubic-bezier(.4,0,.2,1);pointer-events:all;}
+.toast.ok{border-color:rgba(232,22,42,.3);color:rgba(232,22,42,.9);}
+.toast.er{border-color:var(--bdr);color:var(--red);}
+@keyframes ti{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--w15);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--bdr);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav{padding:0 16px;gap:12px;}
+  .nav-chip{display:none;}
+  .hero h1{font-size:64px;}
+  .main{padding:20px 16px 60px;}
+  .model-grid{grid-template-columns:repeat(2,1fr);}
+  .settings-row{grid-template-columns:1fr 1fr;}
+  .tabs{padding:20px 16px 0;}
+  .tab-btn{font-size:18px;padding:12px 18px;}
+}
+
+/* ═══════════════════════════════════════
+   COSTA STUDIO — FULL ANIMATION SYSTEM
+═══════════════════════════════════════ */
+
+/* ── PAGE LOAD STAGGER ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes scaleIn { from{opacity:0;transform:scale(.92)} to{opacity:1;transform:scale(1)} }
+@keyframes slideLeft { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+
+.nav   { animation: fadeDown .7s cubic-bezier(.4,0,.2,1) both; }
+.hero-eye { animation: fadeUp .7s .1s both; }
+.hero-h1  { animation: fadeUp .8s .18s both; }
+.hero-sub { animation: fadeUp .7s .28s both; }
+.model-pills { animation: fadeUp .7s .36s both; }
+.tabs  { animation: fadeDown .7s .08s both; }
+
+/* ── GLITCH TITLE ── (disabled - too distracting) */
+.hero-h1 { position:relative; }
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background:rgba(232,22,42,.06);
+  border-bottom:1px solid rgba(232,22,42,.12);
+  border-top:1px solid rgba(232,22,42,.08);
+  overflow:hidden; height:28px;
+  display:flex; align-items:center;
+  position:relative; z-index:5;
+}
+.ticker-track {
+  display:flex; gap:0;
+  animation: ticker 28s linear infinite;
+  white-space:nowrap;
+}
+.ticker-item {
+  font-family:var(--fm); font-size:9px;
+  letter-spacing:.35em; text-transform:uppercase;
+  color:var(--red); padding:0 32px;
+  flex-shrink:0;
+}
+.ticker-sep { color:rgba(232,22,42,.3); padding:0; }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── LIQUID GLASS HOVER on model buttons ── */
+.mb {
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transform-style: preserve-3d;
+}
+.mb:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(232,22,42,.18), 0 4px 12px rgba(0,0,0,.4);
+}
+.mb:active { transform:translateY(0) scale(.98); }
+
+/* ── MAGNETIC GENERATE BUTTON ── */
+.gen-btn {
+  transition: all .25s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+
+/* ── BREATHING GLOW on gen-btn ── */
+@keyframes breathe {
+  0%,100%{ box-shadow: 0 0 20px rgba(232,22,42,.2), 0 0 0 0 rgba(232,22,42,.3); }
+  50%{ box-shadow: 0 0 40px rgba(232,22,42,.4), 0 0 60px rgba(232,22,42,.1); }
+}
+.gen-btn:not(.ld) { animation: breathe 3s ease-in-out infinite; }
+
+/* ── CURSOR GLOW ── */
+.cursor-glow {
+  position:fixed; pointer-events:none; z-index:9997;
+  width:300px; height:300px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(232,22,42,.06) 0%, transparent 70%);
+  transform:translate(-50%,-50%);
+  transition: opacity .3s;
+}
+
+/* ── PROGRESS PARTICLES ── */
+.particle {
+  position:absolute; width:4px; height:4px;
+  border-radius:50%; background:var(--red);
+  pointer-events:none;
+  animation: burst .8s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes burst {
+  from{ opacity:1; transform:translate(0,0) scale(1); }
+  to{ opacity:0; transform:var(--tx) scale(0); }
+}
+
+/* ── VIDEO REVEAL ── */
+@keyframes revealVid {
+  from{ clip-path:inset(0 50% 0 50%); opacity:0; filter:blur(8px); }
+  to{ clip-path:inset(0 0% 0 0%); opacity:1; filter:blur(0); }
+}
+.out-video.show, .out-img.show {
+  animation: revealVid .8s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+/* ── TAB SWITCH MORPH ── */
+.tab-content-enter {
+  animation: scaleIn .35s cubic-bezier(.4,0,.2,1) both;
+}
+
+/* ── TYPING CURSOR ── */
+.typing-cursor {
+  display:inline-block; width:2px; height:1.1em;
+  background:var(--red); margin-right:2px;
+  animation:blink .9s step-end infinite; vertical-align:text-bottom;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── MODEL PILL HOVER ── */
+.mp { transition: all .2s cubic-bezier(.4,0,.2,1); }
+.mp:hover { transform:translateY(-2px) scale(1.04); }
+
+/* ── NAV MARK LOGO SPIN ON HOVER ── */
+.nav-mark { transition:transform .4s cubic-bezier(.4,0,.2,1); }
+.nav-mark:hover { transform:rotate(8deg) scale(1.08); }
+
+/* ── REF SLOT HOVER ── */
+.ref-slot { transition:all .2s cubic-bezier(.4,0,.2,1); }
+.ref-slot:hover { transform:scale(1.04); }
+
+/* ── HISTORY ITEM STAGGER ── */
+.hi {
+  animation:fadeUp .5s both;
+}
+.hi:nth-child(1){animation-delay:.05s}
+.hi:nth-child(2){animation-delay:.1s}
+.hi:nth-child(3){animation-delay:.15s}
+.hi:nth-child(4){animation-delay:.2s}
+.hi:nth-child(5){animation-delay:.25s}
+.hi:nth-child(6){animation-delay:.3s}
+
+/* ── PROVIDER CARD HOVER ── */
+.provider-card { transition:all .25s cubic-bezier(.4,0,.2,1); }
+.provider-card:hover { transform:translateX(-4px); border-color:var(--bdr); }
+
+/* ── OUTPUT CORNER BLINK WHEN GENERATING ── */
+@keyframes cornerBlink {
+  0%,100%{opacity:1} 50%{opacity:.3}
+}
+.out-corner.red.gen { animation:cornerBlink .8s infinite; }
+
+/* ── SCAN LINE WIPE ON LOAD ── */
+@keyframes wipe {
+  from{transform:translateY(-100%)} to{transform:translateY(100vh)}
+}
+.load-wipe {
+  position:fixed; inset:0; z-index:9996;
+  background:linear-gradient(180deg,transparent 0%,rgba(232,22,42,.04) 50%,transparent 100%);
+  height:40%;
+  animation:wipe 1.2s cubic-bezier(.4,0,.2,1) forwards;
+  pointer-events:none;
+}
+
+/* ── API BANNER SLIDE IN ── */
+.api-banner { animation:slideLeft .6s .5s both; }
+
+
+/* ═══════════════════════════════════════
+   CUSTOM SELECT — No native ugliness
+═══════════════════════════════════════ */
+.sg { position: relative; }
+.cs-wrap { position: relative; }
+.cs-trigger {
+  width: 100%;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w);
+  font-family: var(--fm);
+  font-size: 12px;
+  padding: 10px 32px 10px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color .2s;
+  user-select: none;
+}
+.cs-trigger:hover { border-color: var(--bdr); }
+.cs-trigger.open { border-color: var(--red); }
+.cs-arrow {
+  width: 10px; height: 10px;
+  border-right: 1.5px solid var(--w40);
+  border-bottom: 1.5px solid var(--w40);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform .2s, border-color .2s;
+  flex-shrink: 0;
+}
+.cs-trigger.open .cs-arrow {
+  transform: rotate(-135deg) translateY(-2px);
+  border-color: var(--red);
+}
+.cs-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: rgba(8,8,16,.97);
+  backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--bdr);
+  border-radius: var(--rsm);
+  z-index: 999;
+  overflow: hidden;
+  display: none;
+  animation: ddOpen .18s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 1px rgba(232,22,42,.08);
+}
+.cs-dropdown.open { display: block; }
+@keyframes ddOpen {
+  from { opacity: 0; transform: translateY(-6px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cs-opt {
+  font-family: var(--fm);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--w70);
+  padding: 11px 14px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cs-opt:last-child { border: none; }
+.cs-opt:hover { background: var(--red2); color: var(--w); }
+.cs-opt.selected { color: var(--red); }
+.cs-opt.selected::after {
+  content: '✓';
+  margin-left: auto;
+  font-size: 10px;
+}
+
+/* ═══════════════════════════════════════
+   CALCULATOR PANEL
+═══════════════════════════════════════ */
+#tabCalc {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.calc-hero {
+  text-align: center;
+  padding: 20px 0 36px;
+}
+.calc-hero h2 {
+  font-family: var(--fn);
+  font-size: clamp(36px,6vw,72px);
+  letter-spacing: .06em;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.calc-hero h2 span { color: var(--red); }
+.calc-hero p { font-size: 13px; color: var(--w40); font-family: var(--fm); letter-spacing: .1em; }
+
+.calc-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.calc-input-group label {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--w40);
+  display: block;
+  margin-bottom: 6px;
+}
+.calc-input {
+  width: 100%;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w);
+  font-family: var(--fn);
+  font-size: 28px;
+  letter-spacing: .05em;
+  padding: 12px 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+.calc-input:focus { border-color: var(--bdr); }
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.calc-model-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 18px;
+  transition: border-color .2s, transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+.calc-model-card:hover { border-color: var(--bdr); transform: translateY(-2px); }
+.calc-model-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+}
+.calc-model-card:hover::before { transform: scaleX(1); }
+.cmc-provider {
+  font-family: var(--fm);
+  font-size: 8px;
+  letter-spacing: .3em;
+  color: var(--w40);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cmc-name {
+  font-family: var(--fn);
+  font-size: 18px;
+  letter-spacing: .06em;
+  color: var(--w);
+  margin-bottom: 2px;
+}
+.cmc-rate {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--w40);
+  margin-bottom: 12px;
+}
+.cmc-result {
+  font-family: var(--fn);
+  font-size: 32px;
+  color: var(--red);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.cmc-result.big { font-size: 40px; }
+.cmc-unit {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--w40);
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.cmc-cost-each {
+  font-family: var(--fm);
+  font-size: 11px;
+  color: rgba(232,22,42,.7);
+  margin-top: 6px;
+}
+
+.calc-budget-note {
+  background: var(--red3);
+  border: 1px solid var(--bdr);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--fm);
+  font-size: 12px;
+  color: var(--w70);
+}
+.calc-budget-note strong { color: var(--w); font-size: 14px; }
+
+/* ═══════════════════════════════════════
+   PROMPT LIBRARY
+═══════════════════════════════════════ */
+#tabPrompts { max-width: 900px; margin: 0 auto; }
+
+.prompt-lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.prompt-lib-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 18px;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.prompt-lib-card:hover { border-color: var(--bdr); transform: translateY(-2px); }
+.plc-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  border-radius: var(--rsm);
+  background: var(--s2);
+  margin-bottom: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.plc-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.plc-thumb-ph {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.plc-thumb-ph svg { width: 28px; height: 28px; stroke: var(--w15); }
+.plc-tag {
+  font-family: var(--fm);
+  font-size: 8px;
+  letter-spacing: .25em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.plc-title {
+  font-family: var(--fn);
+  font-size: 16px;
+  letter-spacing: .05em;
+  color: var(--w);
+  margin-bottom: 6px;
+}
+.plc-text {
+  font-size: 12px;
+  color: var(--w40);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.plc-actions {
+  display: flex;
+  gap: 6px;
+}
+.plc-btn {
+  flex: 1;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w70);
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: 8px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.plc-btn:hover { border-color: var(--bdr); color: var(--w); background: var(--red3); }
+.plc-btn.use { background: var(--red2); border-color: var(--bdr); color: var(--red); }
+.plc-btn.use:hover { background: var(--red); color: #000; }
+
+.prompt-add-form {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.prompt-add-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.prompt-add-ta {
+  width: 100%;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w);
+  font-family: var(--fb);
+  font-size: 13px;
+  line-height: 1.7;
+  padding: 14px;
+  resize: none;
+  outline: none;
+  min-height: 100px;
+  transition: border-color .2s;
+  caret-color: var(--red);
+}
+.prompt-add-ta:focus { border-color: var(--bdr); }
+.prompt-add-ta::placeholder { color: var(--w40); }
+.prompt-add-row { display: flex; gap: 8px; }
+.paf-in {
+  flex: 1;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w);
+  font-family: var(--fm);
+  font-size: 11px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color .2s;
+}
+.paf-in:focus { border-color: var(--bdr); }
+.paf-in::placeholder { color: var(--w40); }
+.paf-thumb-btn {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w70);
+  font-family: var(--fm);
+  font-size: 10px;
+  letter-spacing: .1em;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.paf-thumb-btn:hover { border-color: var(--bdr); color: var(--w); }
+.paf-save-btn {
+  background: var(--red);
+  border: none;
+  border-radius: var(--rsm);
+  color: #000;
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  padding: 10px 20px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity .2s;
+  white-space: nowrap;
+}
+.paf-save-btn:hover { opacity: .85; }
+
+/* Quick Templates */
+.qt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+.qt-btn {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: right;
+}
+.qt-btn:hover { border-color: var(--bdr); background: var(--red3); transform: translateY(-1px); }
+.qt-name {
+  font-family: var(--fn);
+  font-size: 15px;
+  letter-spacing: .05em;
+  color: var(--w);
+  margin-bottom: 4px;
+}
+.qt-preview {
+  font-size: 11px;
+  color: var(--w40);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════
+   CANVAS TAB
+═══════════════════════════════════════ */
+#tabCanvas { padding: 0; }
+.canvas-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(5,5,10,.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--bd);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.ct-btn {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w70);
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ct-btn svg { width: 12px; height: 12px; }
+.ct-btn:hover { border-color: var(--bdr); color: var(--w); background: var(--red3); }
+.ct-btn.active { background: var(--red2); border-color: var(--bdr); color: var(--red); }
+.ct-sep { width: 1px; height: 20px; background: var(--bd); margin: 0 4px; }
+.ct-sp { flex: 1; }
+.ct-hint { font-family: var(--fm); font-size: 9px; color: var(--w40); letter-spacing: .15em; }
+
+.canvas-area {
+  width: 100%;
+  height: calc(100vh - 68px - 28px - 44px);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(232,22,42,.04) 0%, transparent 70%),
+    linear-gradient(rgba(232,22,42,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,22,42,.025) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
+  cursor: default;
+}
+.canvas-area.panning { cursor: grabbing; }
+
+.canvas-viewport {
+  position: absolute;
+  transform-origin: 0 0;
+  width: 4000px;
+  height: 3000px;
+}
+
+/* Canvas Node */
+.c-node {
+  position: absolute;
+  min-width: 220px;
+  background: rgba(10,10,20,.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  cursor: grab;
+  transition: border-color .2s, box-shadow .2s;
+  user-select: none;
+}
+.c-node:hover { border-color: var(--bdr); }
+.c-node.selected {
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px rgba(232,22,42,.15), 0 12px 40px rgba(0,0,0,.5);
+}
+.c-node.dragging { cursor: grabbing; box-shadow: 0 20px 60px rgba(0,0,0,.7); z-index: 100; }
+.cn-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--bd);
+}
+.cn-icon {
+  width: 28px; height: 28px;
+  background: var(--red);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--fn);
+  font-size: 11px;
+  color: #000;
+  letter-spacing: .05em;
+}
+.cn-title { font-family: var(--fn); font-size: 14px; letter-spacing: .06em; color: var(--w); flex: 1; }
+.cn-del {
+  width: 18px; height: 18px;
+  background: none;
+  border: none;
+  color: var(--w40);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  transition: all .15s;
+  font-size: 12px;
+}
+.cn-del:hover { background: rgba(232,22,42,.2); color: var(--red); }
+.cn-body { padding: 12px 14px; }
+.cn-body textarea {
+  width: 100%;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w70);
+  font-family: var(--fb);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 10px;
+  resize: none;
+  outline: none;
+  min-height: 70px;
+  caret-color: var(--red);
+  transition: border-color .2s;
+}
+.cn-body textarea:focus { border-color: var(--bdr); }
+.cn-body textarea::placeholder { color: var(--w40); font-size: 11px; }
+.cn-img {
+  width: 100%; border-radius: var(--rsm);
+  margin-top: 8px;
+  max-height: 140px;
+  object-fit: cover;
+  display: none;
+}
+.cn-img.show { display: block; }
+.cn-footer {
+  padding: 8px 14px 12px;
+  display: flex;
+  gap: 6px;
+}
+.cn-ft-btn {
+  flex: 1;
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  color: var(--w40);
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  padding: 7px;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: center;
+}
+.cn-ft-btn:hover { border-color: var(--bdr); color: var(--w); }
+.cn-ft-btn.send { background: var(--red2); border-color: var(--bdr); color: var(--red); }
+.cn-ft-btn.send:hover { background: var(--red); color: #000; }
+
+/* Connection ports */
+.cn-port {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: var(--s3);
+  border: 2px solid var(--bd);
+  border-radius: 50%;
+  cursor: crosshair;
+  transition: all .15s;
+  z-index: 10;
+}
+.cn-port:hover { border-color: var(--red); background: var(--red); transform: scale(1.3); }
+.cn-port.out { right: -7px; top: 50%; transform: translateY(-50%); }
+.cn-port.in  { left: -7px;  top: 50%; transform: translateY(-50%); }
+.cn-port.out:hover { transform: translateY(-50%) scale(1.3); }
+.cn-port.in:hover  { transform: translateY(-50%) scale(1.3); }
+.cn-port.connecting { background: var(--red) !important; box-shadow: 0 0 12px var(--red); transform: translateY(-50%) scale(1.5) !important; }
+
+/* SVG connections */
+#canvasSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.conn-path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  animation: dashFlow 1.2s linear infinite;
+  opacity: .5;
+}
+.conn-path:hover { opacity: 1; stroke-width: 2; }
+@keyframes dashFlow { to { stroke-dashoffset: -18; } }
+.conn-path-bg {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  cursor: pointer;
+  pointer-events: stroke;
+}
+
+/* Mini map */
+.canvas-minimap {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 140px;
+  height: 90px;
+  background: rgba(5,5,10,.9);
+  border: 1px solid var(--bd);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 20;
+}
+.canvas-zoom {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(5,5,10,.85);
+  border: 1px solid var(--bd);
+  border-radius: 100px;
+  padding: 6px 16px;
+  z-index: 20;
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--w70);
+}
+.cz-btn {
+  background: none; border: none;
+  color: var(--w70); cursor: pointer;
+  font-size: 16px; line-height: 1;
+  padding: 0 4px;
+  transition: color .15s;
+}
+.cz-btn:hover { color: var(--red); }
+
+/* Shot Builder */
+.shot-builder {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.sb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.sb-result {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--w70);
+  line-height: 1.7;
+  min-height: 60px;
+  margin-top: 10px;
+}
+.sb-result em { color: var(--red); font-style: normal; }
+.sb-use-btn {
+  background: var(--red);
+  border: none;
+  border-radius: var(--rsm);
+  color: #000;
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  padding: 10px 18px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 8px;
+  transition: opacity .2s;
+}
+.sb-use-btn:hover { opacity: .85; }
+
+/* Aspect Ratio Preview */
+.ar-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: var(--rsm);
+  margin-bottom: 16px;
+}
+.ar-box {
+  background: var(--red2);
+  border: 1px solid var(--bdr);
+  border-radius: 4px;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  flex-shrink: 0;
+}
+.ar-label {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--w40);
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.ar-value {
+  font-family: var(--fn);
+  font-size: 22px;
+  letter-spacing: .05em;
+  color: var(--w);
+}
+
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="bg-grid"></div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+</div>
+
+<div class="load-wipe"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="app">
+<!-- NAVBAR -->
+<nav class="nav">
+  <div class="nav-logo-wrap">
+    <a class="nav-logo" href="#">
+      <div class="nav-mark" id="navMark" style="overflow:visible;background:var(--red);clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px));">
+        <img id="logoImg" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:2px;">
+        <svg id="logoDefault" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <!-- C shape -->
+          <path d="M15 5H7C5.9 5 5 5.9 5 7v4h3V8h7V5z" fill="#000"/>
+          <path d="M5 13v4c0 1.1.9 2 2 2h8v-3H8v-3H5z" fill="#000"/>
+          <!-- S shape -->
+          <path d="M17 5v3h2v2h-4v3h4c1.1 0 2 .9 2 2v2c0 1.1-.9 2-2 2h-4v-3h3v-2h-3c-1.1 0-2-.9-2-2v-2c0-1.1.9-2 2-2h2z" fill="#000"/>
+        </svg>
+      </div>
+      <span class="nav-wordmark">COSTA<em>.</em>STUDIO</span>
+    </a>
+    <!-- زر تغيير الأيقونة — خفيف جداً، يظهر بعد 3 كليكات -->
+    <button class="logo-edit-btn" id="logoEditBtn" onclick="handleLogoClick()" title="Change icon">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M8.5 1.5l2 2-7 7H1.5v-2l7-7z"/>
+      </svg>
+    </button>
+    <input type="file" id="logoFileIn" accept="image/*" style="display:none" onchange="handleLogoUpload(event)">
+  </div>
+  <span class="nav-chip">AI GENERATOR</span>
+  <div class="nav-sp"></div>
+  <div class="nav-st">
+    <div class="sd" id="sdot"></div>
+    <span id="stxt">NO KEY</span>
+  </div>
+  <!-- Balance يعرض كل الـ Providers -->
+  <div class="nav-bal" id="navBal" title="Click to refresh all balances">
+    <span id="balLabel">BALANCE</span> <strong id="nbBal">—</strong>
+    <div class="bal-dropdown" id="balDropdown">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</nav>
+
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">SEEDANCE 2.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">KLING 3.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">VEO 3.1</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">WAN 2.6</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">NANO BANANA PRO</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">GPT IMAGE 2.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">FLUX PRO</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">HAILUO 2.3</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">COSTA STUDIO // AI GENERATOR</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">SEEDANCE 2.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">KLING 3.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">VEO 3.1</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">WAN 2.6</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">NANO BANANA PRO</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">GPT IMAGE 2.0</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">FLUX PRO</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">HAILUO 2.3</span>
+    <span class="ticker-item ticker-sep">◆</span>
+    <span class="ticker-item">COSTA STUDIO // AI GENERATOR</span>
+    <span class="ticker-item ticker-sep">◆</span>
+  </div>
+</div>
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('video',this)">
+    VIDEO STUDIO
+    <span class="tab-cost">Seedance 2.0 · Kling · Veo · WAN</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('image',this)">
+    IMAGE STUDIO
+    <span class="tab-cost">Nano Banana · GPT Image 2.0 · Flux</span>
+  </button>
+  <button class="tab-btn tab-cinema" onclick="switchTab('cinema',this)">
+    <span class="cinema-star-wrap" aria-hidden="true">
+      <svg class="cinema-star" viewBox="0 0 20 20" fill="currentColor"><polygon points="10,1 12.9,7 19.5,7.6 14.5,12 16.2,18.5 10,15 3.8,18.5 5.5,12 0.5,7.6 7.1,7"/></svg>
+    </span>
+    CINEMA STUDIO
+    <span class="tab-cost">1.0 · Full Production Suite</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('calc',this)">
+    CALCULATOR
+    <span class="tab-cost">Atlas pricing · Cost estimator</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('prompts',this)">
+    PROMPT LIBRARY
+    <span class="tab-cost">Templates · Shot builder</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('canvas',this)">
+    CANVAS
+    <span class="tab-cost">Drag &amp; drop workflow</span>
+  </button>
+  <button class="tab-btn" onclick="unlockApis(this)">
+    API PROVIDERS
+    <span class="tab-cost">🔒 Protected</span>
+  </button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eye">COSTA STUDIO // MAZEN COSTA</div>
+  <h1 class="hero-h1" id="heroTitle" data-text="GENERATE CINEMATIC AI VIDEO">GENERATE<br><span class="ac">CINEMATIC</span><br>AI VIDEO</h1>
+  <p class="hero-sub" id="heroSub">Professional AI video generation with Seedance 2.0, Kling 3.0, Veo 3.1 and more — pay only for what you generate.</p>
+  <div class="model-pills" id="heroPills">
+    <div class="mp on">Seedance 2.0</div>
+    <div class="mp">Kling 3.0</div>
+    <div class="mp">Veo 3.1</div>
+    <div class="mp">WAN 2.6</div>
+    <div class="mp">Hailuo</div>
+  </div>
+</section>
+
+<main class="main">
+
+<!-- ────────── VIDEO TAB ────────── -->
+<div id="tabVideo">
+  <div class="studio-grid">
+    <!-- LEFT -->
+    <div>
+      <!-- API KEY -->
+      <div class="api-banner" id="apiBanner">
+        <div class="pl">// Connect Atlas Cloud API Key</div>
+        <div class="api-row">
+          <input type="password" class="api-in" id="apiIn" placeholder="Atlas Cloud API Key (from atlascloud.ai/console)">
+          <button class="api-save" onclick="saveKey()">CONNECT</button>
+        </div>
+        <p class="api-note">Get your key at <a href="https://atlascloud.ai" target="_blank">atlascloud.ai</a> → Console → API Keys. One key for all models (video, image, LLM).</p>
+      </div>
+
+      <!-- MODEL SELECT -->
+      <div class="pl">// Select Model — Atlas Cloud</div>
+
+      <!-- MODE BADGE -->
+      <div id="vModeBadge" style="display:none;margin-bottom:10px;">
+        <span style="font-family:var(--fm);font-size:9px;letter-spacing:.25em;padding:5px 14px;background:rgba(0,230,118,.1);border:1px solid rgba(232,22,42,.3);border-radius:100px;color:var(--red);">
+          📷 I2V MODE — Reference image detected
+        </span>
+      </div>
+
+      <!-- CATEGORY FILTER -->
+      <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;">
+        <button class="mcat-btn active" onclick="filterModels('all',this)">ALL</button>
+        <button class="mcat-btn" onclick="filterModels('seedance',this)">SEEDANCE</button>
+        <button class="mcat-btn" onclick="filterModels('kling',this)">KLING SUITE</button>
+        <button class="mcat-btn" onclick="filterModels('other',this)">OTHER</button>
+      </div>
+
+      <div class="model-grid" id="vModelGrid">
+
+        <!-- SEEDANCE 2.0 FAST — $0.022/s -->
+        <button class="mb on mcat-seedance"
+          data-mk="sd2-fast"
+          data-t2v="bytedance/seedance-2.0-fast/text-to-video"
+          data-i2v="bytedance/seedance-2.0-fast/image-to-video"
+          data-rate="0.022" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-star">★ CHEAPEST</span>
+          <span class="mb-tag">SEEDANCE 2.0</span>
+          <span class="mb-name">FAST</span>
+          <span class="mb-price">$0.022/s</span>
+        </button>
+
+        <!-- SEEDANCE 2.0 STD — $0.10/s -->
+        <button class="mb mcat-seedance"
+          data-mk="sd2-std"
+          data-t2v="bytedance/seedance-2.0/text-to-video"
+          data-i2v="bytedance/seedance-2.0/image-to-video"
+          data-rate="0.10" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">SEEDANCE 2.0</span>
+          <span class="mb-name">STANDARD</span>
+          <span class="mb-price">$0.10/s</span>
+        </button>
+
+        <!-- KLING 3.0 STD — auto T2V/I2V -->
+        <button class="mb mcat-kling"
+          data-mk="kling3-std"
+          data-t2v="kwaivgi/kling-v3.0-std/text-to-video"
+          data-i2v="kwaivgi/kling-v3.0-std/image-to-video"
+          data-rate="0.126" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">KLING 3.0</span>
+          <span class="mb-name">STANDARD</span>
+          <span class="mb-price">$0.126/s</span>
+        </button>
+
+        <!-- KLING 3.0 PRO — auto T2V/I2V -->
+        <button class="mb mcat-kling"
+          data-mk="kling3-pro"
+          data-t2v="kwaivgi/kling-v3.0-pro/text-to-video"
+          data-i2v="kwaivgi/kling-v3.0-pro/image-to-video"
+          data-rate="0.168" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-star">★ PREMIUM</span>
+          <span class="mb-tag">KLING 3.0</span>
+          <span class="mb-name">PRO</span>
+          <span class="mb-price">$0.168/s</span>
+        </button>
+
+        <!-- KLING O3 — auto T2V/I2V/Ref2V -->
+        <button class="mb mcat-kling"
+          data-mk="kling-o3"
+          data-t2v="kwaivgi/kling-video-o3-std/text-to-video"
+          data-i2v="kwaivgi/kling-video-o3-std/image-to-video"
+          data-ref2v="kwaivgi/kling-video-o3-std/reference-to-video"
+          data-rate="0.15" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">KLING O3</span>
+          <span class="mb-name">OMNI</span>
+          <span class="mb-price">$0.15/s</span>
+        </button>
+
+        <!-- KLING 2.6 STD — auto T2V/I2V -->
+        <button class="mb mcat-kling"
+          data-mk="kling26"
+          data-t2v="kwaivgi/kling-v2.6-std/text-to-video"
+          data-i2v="kwaivgi/kling-v2.6-std/image-to-video"
+          data-rate="0.071" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">KLING 2.6</span>
+          <span class="mb-name">STANDARD</span>
+          <span class="mb-price">$0.071/s</span>
+        </button>
+
+        <!-- KLING MOTION CONTROL STD — ترفع صورة + موشن فيديو -->
+        <button class="mb mcat-kling"
+          data-mk="kling-mc-std"
+          data-t2v="kwaivgi/kling-v2.6-std/motion-control"
+          data-i2v="kwaivgi/kling-v2.6-std/motion-control"
+          data-rate="0.06" data-flat="1"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">KLING MC</span>
+          <span class="mb-name">STD · MOTION</span>
+          <span class="mb-price">$0.06/run</span>
+        </button>
+
+        <!-- KLING MOTION CONTROL PRO -->
+        <button class="mb mcat-kling"
+          data-mk="kling-mc-pro"
+          data-t2v="kwaivgi/kling-v2.6-pro/motion-control"
+          data-i2v="kwaivgi/kling-v2.6-pro/motion-control"
+          data-rate="0.095" data-flat="1"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">KLING MC</span>
+          <span class="mb-name">PRO · MOTION</span>
+          <span class="mb-price">$0.095/run</span>
+        </button>
+
+        <!-- VEO 3.1 — T2V only -->
+        <button class="mb mcat-other"
+          data-mk="veo31"
+          data-t2v="veo-3.1-lite/text-to-video"
+          data-i2v="veo-3.1-lite/text-to-video"
+          data-rate="0.10" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">VEO</span>
+          <span class="mb-name">3.1 LITE</span>
+          <span class="mb-price">$0.10/s</span>
+        </button>
+
+        <!-- WAN 2.7 — auto T2V/I2V -->
+        <button class="mb mcat-other"
+          data-mk="wan27"
+          data-t2v="wan-2.7/text-to-video"
+          data-i2v="wan-2.7/image-to-video"
+          data-rate="0.10" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-tag">WAN</span>
+          <span class="mb-name">2.7</span>
+          <span class="mb-price">$0.10/s</span>
+        </button>
+
+        <!-- HAPPYHORSE 1.0 — auto T2V/I2V -->
+        <button class="mb mcat-other"
+          data-mk="hh10"
+          data-t2v="happyhorse-1.0/text-to-video"
+          data-i2v="happyhorse-1.0/image-to-video"
+          data-rate="0.14" data-flat="0"
+          onclick="pickModel(this,'v')">
+          <span class="mb-star">★ TOP QUALITY</span>
+          <span class="mb-tag">HAPPYHORSE</span>
+          <span class="mb-name">1.0</span>
+          <span class="mb-price">$0.14/s</span>
+        </button>
+
+      </div>
+
+      <!-- PROMPT -->
+      <div class="pl">// Prompt</div>
+      <div class="prompt-wrap">
+        <textarea class="prompt-ta" id="vPrompt" maxlength="2000"
+          placeholder="Describe your video...&#10;&#10;Example: Cyberpunk Cairo alley at 2 AM, Egyptian male walking through neon-lit streets, rain-soaked asphalt, volumetric fog, dolly-in movement, ARRI ALEXA 35, red and white neon reflections, cinematic depth of field..."></textarea>
+        <div class="char-count"><span id="vChar">0</span>/2000</div>
+      </div>
+
+      <!-- IMAGE REFS -->
+      <div class="pl">// Reference Images (up to 4)</div>
+      <div class="ref-grid" id="vRefGrid">
+        <div class="ref-slot" onclick="openRef(0,'v')" id="vref0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 1</span><span class="rmv" onclick="rmRef(event,0,'v')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(1,'v')" id="vref1"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 2</span><span class="rmv" onclick="rmRef(event,1,'v')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(2,'v')" id="vref2"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 3</span><span class="rmv" onclick="rmRef(event,2,'v')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(3,'v')" id="vref3"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 4</span><span class="rmv" onclick="rmRef(event,3,'v')">✕</span></div>
+      </div>
+      <input type="file" id="vFileIn" accept="image/*" style="display:none" onchange="handleRef(event,'v')">
+
+      <!-- SETTINGS -->
+      <div class="pl">// Settings</div>
+      <div class="settings-row">
+        <div class="sg"><label>Duration</label>
+          <select id="vDur" onchange="updateCost('v')">
+            <option value="5">5 seconds</option>
+            <option value="8">8 seconds</option>
+            <option value="10" selected>10 seconds</option>
+            <option value="15">15 seconds</option>
+          </select>
+        </div>
+        <div class="sg"><label>Resolution</label>
+          <select id="vRes" onchange="updateCost('v')">
+            <option value="480p">480p</option>
+            <option value="720p" selected>720p</option>
+            <option value="1080p">1080p</option>
+          </select>
+        </div>
+        <div class="sg"><label>Aspect Ratio</label>
+          <select id="vRatio">
+            <option value="9:16">9:16 — Reels</option>
+            <option value="16:9">16:9 — Cinematic</option>
+            <option value="1:1">1:1 — Square</option>
+            <option value="4:5">4:5 — Portrait</option>
+            <option value="21:9">21:9 — Ultra Wide</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- AUDIO -->
+      <div class="aud-row" onclick="toggleAud()">
+        <div class="aud-lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          Native Audio Generation
+        </div>
+        <div class="tsw" id="audSw"></div>
+      </div>
+
+      <!-- COST -->
+      <div class="cost-bar">
+        <span class="cl">ESTIMATED COST</span>
+        <span class="cv"><span class="gr" id="vCost">—</span></span>
+      </div>
+
+      <!-- GENERATE -->
+      <button class="gen-btn" id="vGenBtn" onclick="generate('v')">
+        <div class="gen-inner">
+          <div class="spin"></div>
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span id="vBtnTxt">GENERATE VIDEO</span>
+        </div>
+      </button>
+
+      <!-- HISTORY -->
+      <div class="hist-sec">
+        <div class="pl">// Video History</div>
+        <div class="hist-grid" id="vHistGrid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT — OUTPUT -->
+    <div class="out-panel">
+      <div class="pl">// Output</div>
+      <div class="out-screen">
+        <div class="out-corner" id="vCorner">READY</div>
+        <div class="out-ph" id="vPH">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.5"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          <p>Your video<br>will appear here</p>
+        </div>
+        <div class="prog-ov" id="vProg">
+          <div class="prog-ring">
+            <svg viewBox="0 0 80 80"><circle class="pr-tr" cx="40" cy="40" r="36"/><circle class="pr-fl" id="vFill" cx="40" cy="40" r="36"/></svg>
+            <div class="prog-pct" id="vPct">0%</div>
+          </div>
+          <div class="prog-st" id="vSt">INITIALIZING</div>
+        </div>
+        <video class="out-video" id="vVid" controls loop playsinline></video>
+      </div>
+      <div class="out-acts">
+        <button class="ob" id="vDlBtn" onclick="dlVideo()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          DOWNLOAD
+        </button>
+        <button class="ob" onclick="copyUrl('v')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          COPY URL
+        </button>
+        <button class="ob pri" onclick="generate('v')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          REGENERATE
+        </button>
+      </div>
+      <div class="out-meta">
+        <div class="meta-it"><span class="meta-k">Model</span><span class="meta-v" id="vMModel">—</span></div>
+        <div class="meta-it"><span class="meta-k">Duration</span><span class="meta-v" id="vMDur">—</span></div>
+        <div class="meta-it"><span class="meta-k">Cost</span><span class="meta-v" id="vMCost">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── IMAGE TAB ────────── -->
+<div id="tabImage" style="display:none">
+  <div class="studio-grid">
+    <div>
+      <div class="pl">// Select Image Model — Atlas Cloud</div>
+      <div class="model-grid" id="iModelGrid">
+        <button class="mb on" data-mk="nb2" data-model="google/nano-banana-2/text-to-image" data-rate="0.013" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-star">★ FASTEST</span>
+          <span class="mb-tag">NANO BANANA</span>
+          <span class="mb-name">2 · FLASH</span>
+          <span class="mb-price">$0.013/img</span>
+        </button>
+        <button class="mb" data-mk="nb-pro" data-model="google/nano-banana-pro/text-to-image" data-rate="0.05" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-star">★ 4K</span>
+          <span class="mb-tag">NANO BANANA</span>
+          <span class="mb-name">PRO</span>
+          <span class="mb-price">$0.05/img</span>
+        </button>
+        <button class="mb" data-mk="gpt2" data-model="gpt-image-2/text-to-image" data-rate="0.04" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">GPT IMAGE</span>
+          <span class="mb-name">2.0</span>
+          <span class="mb-price">$0.04/img</span>
+        </button>
+        <button class="mb" data-mk="seedream45" data-model="seedream-4.5/text-to-image" data-rate="0.02" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-star">★ NEW</span>
+          <span class="mb-tag">SEEDREAM</span>
+          <span class="mb-name">4.5</span>
+          <span class="mb-price">$0.02/img</span>
+        </button>
+        <button class="mb" data-mk="flux-pro" data-model="flux-1.1-pro/text-to-image" data-rate="0.055" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">FLUX</span>
+          <span class="mb-name">PRO 1.1</span>
+          <span class="mb-price">$0.055/img</span>
+        </button>
+        <button class="mb" data-mk="flux-dev" data-model="flux-1/dev/text-to-image" data-rate="0.025" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">FLUX</span>
+          <span class="mb-name">DEV</span>
+          <span class="mb-price">$0.025/img</span>
+        </button>
+        <button class="mb" data-mk="qwen-img" data-model="qwen-image-2.0/text-to-image" data-rate="0.01" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">QWEN IMAGE</span>
+          <span class="mb-name">2.0</span>
+          <span class="mb-price">$0.01/img</span>
+        </button>
+        <button class="mb" data-mk="ideogram" data-model="ideogram-v2/text-to-image" data-rate="0.08" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">IDEOGRAM</span>
+          <span class="mb-name">V2</span>
+          <span class="mb-price">$0.08/img</span>
+        </button>
+        <button class="mb" data-mk="recraft" data-model="recraft-v3/text-to-image" data-rate="0.04" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">RECRAFT</span>
+          <span class="mb-name">V3</span>
+          <span class="mb-price">$0.04/img</span>
+        </button>
+        <button class="mb" data-mk="ernie" data-model="ernie-image/text-to-image" data-rate="0.008" data-flat="1" onclick="pickModel(this,'i')">
+          <span class="mb-tag">ERNIE</span>
+          <span class="mb-name">IMAGE</span>
+          <span class="mb-price">$0.008/img</span>
+        </button>
+      </div>
+
+      <div class="pl">// Prompt</div>
+      <div class="prompt-wrap">
+        <textarea class="prompt-ta" id="iPrompt" maxlength="2000"
+          placeholder="Describe your image...&#10;&#10;Example: Cyberpunk Cairo street, Egyptian character, neon signs in Arabic, dark cinematic, red and white color palette, ultra-detailed, 8K, cinematic depth of field..."></textarea>
+        <div class="char-count"><span id="iChar">0</span>/2000</div>
+      </div>
+
+      <div class="pl">// Reference Images (up to 4)</div>
+      <div class="ref-grid" id="iRefGrid">
+        <div class="ref-slot" onclick="openRef(0,'i')" id="iref0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 1</span><span class="rmv" onclick="rmRef(event,0,'i')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(1,'i')" id="iref1"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 2</span><span class="rmv" onclick="rmRef(event,1,'i')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(2,'i')" id="iref2"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 3</span><span class="rmv" onclick="rmRef(event,2,'i')">✕</span></div>
+        <div class="ref-slot" onclick="openRef(3,'i')" id="iref3"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg><span>REF 4</span><span class="rmv" onclick="rmRef(event,3,'i')">✕</span></div>
+      </div>
+      <input type="file" id="iFileIn" accept="image/*" style="display:none" onchange="handleRef(event,'i')">
+
+      <div class="pl">// Settings</div>
+      <div class="settings-row">
+        <div class="sg"><label>Image Size</label>
+          <select id="iSize">
+            <option value="square_hd">Square HD (1024²)</option>
+            <option value="portrait_4_3">Portrait 4:3</option>
+            <option value="portrait_16_9">Portrait 16:9</option>
+            <option value="landscape_4_3">Landscape 4:3</option>
+            <option value="landscape_16_9" selected>Landscape 16:9</option>
+          </select>
+        </div>
+        <div class="sg"><label>Style</label>
+          <select id="iStyle">
+            <option value="">Auto</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="photographic">Photographic</option>
+            <option value="digital_art">Digital Art</option>
+            <option value="anime">Anime</option>
+          </select>
+        </div>
+        <div class="sg"><label>Count</label>
+          <select id="iCount">
+            <option value="1" selected>1 image</option>
+            <option value="2">2 images</option>
+            <option value="4">4 images</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cost-bar">
+        <span class="cl">ESTIMATED COST</span>
+        <span class="cv"><span class="gr" id="iCost">$0.005</span></span>
+      </div>
+
+      <button class="gen-btn" id="iGenBtn" onclick="generate('i')">
+        <div class="gen-inner">
+          <div class="spin"></div>
+          <svg class="gi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+          <span id="iBtnTxt">GENERATE IMAGE</span>
+        </div>
+      </button>
+
+      <div class="hist-sec">
+        <div class="pl">// Image History</div>
+        <div class="hist-grid" id="iHistGrid"></div>
+      </div>
+    </div>
+
+    <!-- IMAGE OUTPUT -->
+    <div class="out-panel">
+      <div class="pl">// Output</div>
+      <div class="out-screen">
+        <div class="out-corner" id="iCorner">READY</div>
+        <div class="out-ph" id="iPH">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+          <p>Your image<br>will appear here</p>
+        </div>
+        <div class="prog-ov" id="iProg">
+          <div class="prog-ring">
+            <svg viewBox="0 0 80 80"><circle class="pr-tr" cx="40" cy="40" r="36"/><circle class="pr-fl" id="iFill" cx="40" cy="40" r="36"/></svg>
+            <div class="prog-pct" id="iPct">0%</div>
+          </div>
+          <div class="prog-st" id="iSt">GENERATING</div>
+        </div>
+        <img class="out-img" id="iImg" alt="Generated">
+      </div>
+      <div class="out-acts">
+        <button class="ob" id="iDlBtn" onclick="dlImage()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          DOWNLOAD
+        </button>
+        <button class="ob" onclick="copyUrl('i')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          COPY URL
+        </button>
+        <button class="ob pri" onclick="generate('i')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          REGENERATE
+        </button>
+      </div>
+      <div class="out-meta">
+        <div class="meta-it"><span class="meta-k">Model</span><span class="meta-v" id="iMModel">—</span></div>
+        <div class="meta-it"><span class="meta-k">Size</span><span class="meta-v" id="iMSize">—</span></div>
+        <div class="meta-it"><span class="meta-k">Cost</span><span class="meta-v" id="iMCost">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── API PROVIDERS TAB ────────── -->
+<div id="tabApis" style="display:none">
+  <div style="max-width:700px;margin:0 auto;">
+
+    <div class="pl">// Active Providers</div>
+    <div class="provider-list" id="provList"></div>
+
+    <div style="height:24px"></div>
+    <div class="pl">// Add New Provider</div>
+    <div class="add-prov-form glass" style="padding:22px;">
+      <p style="font-size:14px;color:var(--w70);margin-bottom:14px;line-height:1.7;">
+        Add any API provider. Paste the base URL and your key — the Studio will use their pricing automatically.
+      </p>
+      <div class="add-prov-grid">
+        <input type="text" id="newProvName" placeholder="Provider name (e.g. fal.ai)">
+        <input type="text" id="newProvBase" placeholder="Base URL (e.g. https://fal.run)">
+      </div>
+      <div class="add-prov-row">
+        <input type="password" id="newProvKey" placeholder="API Key">
+        <button class="add-prov-btn" onclick="addProvider()">ADD PROVIDER</button>
+      </div>
+      <p style="font-size:11px;color:var(--w40);margin-top:12px;line-height:1.6;">
+        Cost is calculated from the model's published rate. Costs update automatically when you select a model.
+        Your key is saved locally — never sent anywhere except to the provider you selected.
+      </p>
+    </div>
+
+    <div style="height:32px"></div>
+    <div class="pl">// Quick Connect</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:0;">
+      <button class="ob" style="padding:18px;font-size:11px;height:auto;flex-direction:column;gap:6px;" onclick="quickAdd('fal.ai','https://fal.run')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        FAL.AI
+      </button>
+      <button class="ob" style="padding:18px;font-size:11px;height:auto;flex-direction:column;gap:6px;" onclick="quickAdd('Atlas Cloud','https://api.atlascloud.ai')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        ATLAS CLOUD
+      </button>
+      <button class="ob" style="padding:18px;font-size:11px;height:auto;flex-direction:column;gap:6px;" onclick="quickAdd('PiAPI','https://api.piapi.ai')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        PIAPI
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ────────── CINEMA STUDIO TAB ────────── -->
+<div id="tabCinema" style="display:none">
+
+  <!-- CHARACTERS BAR -->
+  <div class="cinema-chars" id="cinemaCharsBar">
+    <span class="cinema-chars-label">CAST</span>
+    <div id="charChips"></div>
+    <button class="add-char-btn" onclick="openCharModal()">+ ADD CHARACTER</button>
+  </div>
+
+  <div class="cinema-wrap">
+    <!-- LEFT PANEL -->
+    <div class="cinema-left">
+
+      <!-- MODE TOGGLE -->
+      <div class="cinema-mode-toggle">
+        <button class="cmt-btn on" id="cmtImg" onclick="setCinemaMode('image',this)">📷 IMAGE</button>
+        <button class="cmt-btn" id="cmtVid" onclick="setCinemaMode('video',this)">🎬 VIDEO</button>
+      </div>
+
+      <!-- MODEL -->
+      <div class="cinema-panel">
+        <div class="cinema-panel-title">MODEL</div>
+        <div id="cinemaModelGrid" class="model-grid" style="margin:0"></div>
+      </div>
+
+      <!-- CAMERA CONTROLS -->
+      <div class="cinema-panel" id="cinemaCamPanel">
+        <div class="cinema-panel-title">CAMERA</div>
+        <div class="cam-grid">
+          <div class="cam-item">
+            <label>Camera Body</label>
+            <select class="api-in" id="cinemaCamBody" style="padding:8px 12px;font-size:12px;">
+              <option>ARRI ALEXA 35</option>
+              <option>RED MONSTRO 8K</option>
+              <option>Sony Venice 2</option>
+              <option>IMAX 70mm</option>
+              <option>16mm Film</option>
+              <option>iPhone (handheld)</option>
+            </select>
+          </div>
+          <div class="cam-item">
+            <label>Lens</label>
+            <select class="api-in" id="cinemaCamLens" style="padding:8px 12px;font-size:12px;">
+              <option>Anamorphic 2.39:1</option>
+              <option>35mm Prime</option>
+              <option>50mm Standard</option>
+              <option>85mm Portrait</option>
+              <option>24mm Wide</option>
+              <option>200mm Telephoto</option>
+            </select>
+          </div>
+          <div class="cam-item">
+            <label>Movement</label>
+            <select class="api-in" id="cinemaCamMove" style="padding:8px 12px;font-size:12px;">
+              <option>Dolly In</option>
+              <option>Dolly Out</option>
+              <option>Orbit 360°</option>
+              <option>Crane Up</option>
+              <option>FPV Drone</option>
+              <option>Handheld Shake</option>
+              <option>Crash Zoom</option>
+              <option>Static Lock</option>
+              <option>Rack Focus</option>
+            </select>
+          </div>
+          <div class="cam-item">
+            <label>Depth of Field</label>
+            <select class="api-in" id="cinemaCamDof" style="padding:8px 12px;font-size:12px;">
+              <option>Shallow — Bokeh</option>
+              <option>Medium</option>
+              <option>Deep — All sharp</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENRE -->
+      <div class="cinema-panel">
+        <div class="cinema-panel-title">GENRE &amp; MOOD</div>
+        <div class="genre-pills">
+          <span class="genre-pill on" onclick="toggleGenre(this)">CYBERPUNK</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">ACTION</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">DARK THRILLER</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">GTA STYLE</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">MARVEL</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">HORROR</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">EDITORIAL</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">COMMERCIAL</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">SCI-FI</span>
+          <span class="genre-pill" onclick="toggleGenre(this)">NOIR</span>
+        </div>
+      </div>
+
+      <!-- PROMPT -->
+      <div class="cinema-panel">
+        <div class="cinema-panel-title">SCENE DESCRIPTION</div>
+        <div id="cinemaModeBadge" class="cinema-mode-badge">📷 I2V MODE — Reference detected</div>
+        <textarea class="cinema-prompt-ta" id="cinemaPrompt" maxlength="4000"
+          placeholder="Describe your scene in full detail...
+
+Characters: Use @NAME to reference your saved characters.
+Camera: The AI will inject your camera settings automatically.
+Example: @CAIRO_RUNNER sprinting through neon-lit alley, rain-soaked asphalt, volumetric fog, 2 AM, red and white neon reflections on puddles, cinematic slow motion, crowd parting...
+
+4000 characters available — go full director mode."></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+          <div style="font-family:var(--fm);font-size:9px;color:var(--w40);letter-spacing:.1em;">
+            <span id="cinemaChar">0</span>/4000
+          </div>
+          <button onclick="buildCinemaPrompt()" style="font-family:var(--fm);font-size:9px;letter-spacing:.15em;padding:5px 12px;background:rgba(255,196,0,.08);border:1px solid rgba(255,196,0,.25);border-radius:6px;color:var(--red);cursor:pointer;">⚙ AUTO-BUILD PROMPT</button>
+        </div>
+      </div>
+
+      <!-- REFERENCES — صور وفيديوهات مع بعض -->
+      <div class="cinema-panel">
+        <div class="cinema-panel-title">REFERENCES</div>
+        <div class="cinema-ref-add-row">
+          <button class="cra-btn" onclick="addCinemaRef('image')">📎 + IMAGE</button>
+          <button class="cra-btn" onclick="addCinemaRef('video')">🎬 + VIDEO</button>
+        </div>
+        <div class="cinema-refs-grid" id="cinemaRefsGrid">
+          <!-- بيتضاف ديناميك -->
+        </div>
+        <div id="cinemaRefsEmpty" style="font-family:var(--fm);font-size:10px;color:var(--w40);letter-spacing:.1em;text-align:center;padding:12px;">
+          No references added yet
+        </div>
+        <input type="file" id="cinemaImgIn"   accept="image/*"   style="display:none" onchange="handleCinemaRef(event,'image')">
+        <input type="file" id="cinemaVideoIn" accept="video/*"   style="display:none" onchange="handleCinemaRef(event,'video')">
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="cinema-panel" id="cinemaDurPanel">
+        <div class="cinema-panel-title">OUTPUT SETTINGS</div>
+        <div class="settings-row" style="margin:0">
+          <div class="sg"><label>Duration</label>
+            <select class="api-in" id="cinemaDur" style="padding:8px 12px;font-size:12px;" onchange="updateCinemaCost()">
+              <option value="5">5 seconds</option>
+              <option value="8">8 seconds</option>
+              <option value="10" selected>10 seconds</option>
+              <option value="15">15 seconds</option>
+            </select>
+          </div>
+          <div class="sg"><label>Resolution</label>
+            <select class="api-in" id="cinemaRes" style="padding:8px 12px;font-size:12px;">
+              <option value="720p">720p</option>
+              <option value="1080p" selected>1080p</option>
+            </select>
+          </div>
+          <div class="sg"><label>Aspect Ratio</label>
+            <select class="api-in" id="cinemaRatio" style="padding:8px 12px;font-size:12px;">
+              <option value="9:16">9:16 — Reels</option>
+              <option value="16:9">16:9 — Cinematic</option>
+              <option value="1:1">1:1 — Square</option>
+              <option value="21:9">21:9 — Ultra Wide</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- COST + GENERATE -->
+      <div class="cinema-cost-bar">
+        <span class="ccb-label">ESTIMATED COST</span>
+        <span class="ccb-val" id="cinemaCost">—</span>
+      </div>
+      <button class="cinema-gen-btn" id="cinemaGenBtn" onclick="generateCinema()">
+        ★ GENERATE
+      </button>
+
+    </div><!-- end left -->
+
+    <!-- RIGHT PANEL — OUTPUT -->
+    <div class="cinema-out out-panel">
+      <div class="pl">// Output</div>
+      <div class="out-screen" style="min-height:400px;">
+        <div class="out-corner" id="cinemaCorner">READY</div>
+        <div class="out-ph" id="cinemaPH">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.5"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          <p>Costa Cinema Studio<br><span style="font-size:11px;color:var(--red);">1.0</span></p>
+        </div>
+        <div class="prog-ov" id="cinemaProg">
+          <div class="prog-ring">
+            <svg viewBox="0 0 80 80"><circle class="pr-tr" cx="40" cy="40" r="36"/><circle class="pr-fl" id="cinemaFill" cx="40" cy="40" r="36"/></svg>
+            <div class="prog-pct" id="cinemaPct">0%</div>
+          </div>
+          <div class="prog-st" id="cinemaSt">INITIALIZING</div>
+        </div>
+        <video class="out-video" id="cinemaVid" controls loop playsinline></video>
+        <img class="out-img" id="cinemaImg" alt="Generated">
+      </div>
+      <div class="out-acts">
+        <button class="ob" id="cinemaDlBtn" onclick="dlCinema()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          DOWNLOAD
+        </button>
+        <button class="ob" onclick="copyUrlCinema()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          COPY URL
+        </button>
+        <button class="ob pri" onclick="generateCinema()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          REGENERATE
+        </button>
+      </div>
+      <div class="out-meta">
+        <div class="meta-it"><span class="meta-k">Model</span><span class="meta-v" id="cinemaMModel">—</span></div>
+        <div class="meta-it"><span class="meta-k">Mode</span><span class="meta-v" id="cinemaMMode">—</span></div>
+        <div class="meta-it"><span class="meta-k">Cost</span><span class="meta-v" id="cinemaMCost">—</span></div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="hist-sec" style="margin-top:20px;">
+        <div class="pl">// Cinema History</div>
+        <div class="hist-grid" id="cinemaHistGrid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHARACTER MODAL -->
+<div class="char-modal-overlay" id="charModal" style="display:none" onclick="closeCharModal(event)">
+  <div class="char-modal" onclick="event.stopPropagation()">
+    <h3>ADD CHARACTER</h3>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+      <div class="char-img-upload" onclick="document.getElementById('charImgIn').click()">
+        <img id="charImgPreview" src="" alt="" style="display:none">
+        <svg id="charImgIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span>PHOTO</span>
+        <input type="file" id="charImgIn" accept="image/*" style="display:none" onchange="previewCharImg(event)">
+      </div>
+      <div style="flex:1">
+        <input class="char-in" id="charName" placeholder="Character name (e.g. CAIRO RUNNER)" style="margin-bottom:8px;text-transform:uppercase;">
+        <input class="char-in" id="charTag" placeholder="@tag (e.g. @runner — use in prompt)">
+      </div>
+    </div>
+    <textarea class="char-in" id="charDesc" rows="4" style="resize:none;width:100%;margin-bottom:8px;"
+      placeholder="Describe appearance: Egyptian male, 28, tactical jacket, cyberpunk implants, short dark hair, athletic build, red-tinted glasses..."></textarea>
+    <div class="char-form-grid">
+      <input class="char-in" id="charGender" placeholder="Gender">
+      <input class="char-in" id="charAge" placeholder="Age / Era">
+      <input class="char-in" id="charOutfit" placeholder="Outfit / Style">
+      <input class="char-in" id="charDistinct" placeholder="Distinguishing feature">
+    </div>
+    <div class="char-modal-actions">
+      <button class="char-cancel-btn" onclick="closeCharModal()">CANCEL</button>
+      <button class="char-save-btn" onclick="saveCharacter()">SAVE CHARACTER</button>
+    </div>
+  </div>
+</div>
+
+<!-- ────────── CALCULATOR TAB ────────── -->
+<div id="tabCalc" style="display:none">
+  <div class="calc-hero">
+    <h2>COST <span>CALCULATOR</span></h2>
+    <p>Atlas Cloud real pricing — updated from source</p>
+  </div>
+
+  <div class="calc-controls">
+    <div class="calc-input-group">
+      <label>My Budget ($)</label>
+      <input type="number" class="calc-input" id="calcBudget" value="50" min="1" max="10000" oninput="calcUpdate()">
+    </div>
+    <div class="calc-input-group">
+      <label>Video Duration (seconds)</label>
+      <input type="number" class="calc-input" id="calcDur" value="15" min="1" max="60" oninput="calcUpdate()">
+    </div>
+    <div class="calc-input-group">
+      <label>Image Count</label>
+      <input type="number" class="calc-input" id="calcImgCount" value="1" min="1" max="10" oninput="calcUpdate()">
+    </div>
+  </div>
+
+  <div class="pl">// Video Models — Atlas Cloud Pricing</div>
+  <div class="calc-grid" id="calcVideoGrid"></div>
+
+  <div class="pl">// Image Models — Atlas Cloud Pricing</div>
+  <div class="calc-grid" id="calcImgGrid"></div>
+
+  <div class="calc-budget-note">
+    <span>Budget: <strong id="calcBudgetDisplay">$50</strong></span>
+    <span>Best video value: <strong id="calcBestVid">—</strong></span>
+    <span>Best image value: <strong id="calcBestImg">—</strong></span>
+  </div>
+</div>
+<!-- ────────── PROMPTS TAB ────────── -->
+<div id="tabPrompts" style="display:none">
+
+  <!-- Shot Builder -->
+  <div class="shot-builder">
+    <div class="pl">// Shot Builder — بيولدلك الـ Prompt تلقائي</div>
+    <div class="sb-grid" id="sbGrid"></div>
+    <div class="sb-result" id="sbResult">اختار من القوائم فوق وهيتولد الـ Prompt هنا...</div>
+    <button class="sb-use-btn" onclick="useShotPrompt()">USE IN VIDEO STUDIO</button>
+  </div>
+
+  <!-- Quick Templates -->
+  <div class="pl">// Quick Templates — اضغط لتحط في الـ Prompt</div>
+  <div class="qt-grid" id="qtGrid"></div>
+
+  <!-- Add Prompt -->
+  <div class="pl">// Add New Prompt</div>
+  <div class="prompt-add-form">
+    <div class="prompt-add-grid">
+      <input class="paf-in" id="pafTitle" placeholder="Prompt title (e.g. Cyberpunk Chase)">
+      <input class="paf-in" id="pafTag" placeholder="Tag (e.g. Cinematic, GTA, Dark)">
+    </div>
+    <textarea class="prompt-add-ta" id="pafText" rows="4"
+      placeholder="Write your full prompt here..."></textarea>
+    <div class="prompt-add-row" style="margin-top:8px;">
+      <button class="paf-thumb-btn" onclick="triggerPafImg()">+ REFERENCE IMAGE</button>
+      <input type="file" id="pafImgIn" accept="image/*" style="display:none" onchange="handlePafImg(event)">
+      <span id="pafImgName" style="font-family:var(--fm);font-size:10px;color:var(--w40);flex:1;padding:10px 0;"></span>
+      <button class="paf-save-btn" onclick="savePrompt()">SAVE PROMPT</button>
+    </div>
+  </div>
+
+  <!-- Saved Prompts -->
+  <div class="pl">// Saved Prompts (<span id="promptCount">0</span>)</div>
+  <div class="prompt-lib-grid" id="promptLibGrid"></div>
+</div>
+<!-- ────────── CANVAS TAB ────────── -->
+<div id="tabCanvas" style="display:none">
+  <div class="canvas-toolbar">
+    <button class="ct-btn active" id="ctSelect" onclick="setCanvasTool('select')">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 4-4 1-1 4z"/></svg>
+      SELECT
+    </button>
+    <div class="ct-sep"></div>
+    <button class="ct-btn" onclick="addNode('prompt')">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="3" width="10" height="7" rx="1"/><path d="M3 1h6"/></svg>
+      PROMPT NODE
+    </button>
+    <button class="ct-btn" onclick="addNode('image')">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="1" width="10" height="10" rx="1"/><circle cx="4" cy="4" r="1"/><path d="M1 8l3-3 2 2 2-2 3 3"/></svg>
+      IMAGE NODE
+    </button>
+    <button class="ct-btn" onclick="addNode('video')">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="1,1 11,6 1,11"/></svg>
+      VIDEO NODE
+    </button>
+    <button class="ct-btn" onclick="addNode('note')">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="1" width="10" height="10" rx="1"/><path d="M3 4h6M3 7h4"/></svg>
+      NOTE
+    </button>
+    <div class="ct-sep"></div>
+    <button class="ct-btn" onclick="clearCanvas()">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8"/></svg>
+      CLEAR
+    </button>
+    <div class="ct-sp"></div>
+    <span class="ct-hint">Drag to move · Port → Port to connect · Delete to remove node</span>
+  </div>
+
+  <div class="canvas-area" id="canvasArea">
+    <div class="canvas-viewport" id="canvasVP">
+      <svg id="canvasSvg"></svg>
+    </div>
+    <div class="canvas-zoom">
+      <button class="cz-btn" onclick="zoomCanvas(-0.15)">−</button>
+      <span id="zoomLabel">100%</span>
+      <button class="cz-btn" onclick="zoomCanvas(0.15)">+</button>
+      <button class="cz-btn" onclick="resetCanvasView()" style="font-size:11px;font-family:var(--fm);letter-spacing:.1em;">FIT</button>
+    </div>
+  </div>
+</div>
+</main>
+</div>
+
+<div class="toasts" id="tc"></div>
+
+<script>
+// ── STATE ──
+const S = {
+  key: localStorage.getItem('cs_key') || '',
+  audOn: false,
+  vModel: { mk:'sd2-fast', t2v:'bytedance/seedance-2.0-fast/text-to-video', i2v:'bytedance/seedance-2.0-fast/image-to-video', ref2v:'bytedance/seedance-2.0-fast/image-to-video', rate:0.022, flat:false },
+  iModel: { mk:'nb2', model:'google/nano-banana-2/text-to-image', rate:0.013, flat:true },
+  vRefs: [null,null,null,null],
+  iRefs: [null,null,null,null],
+  curSlot: 0, curTab: 'v',
+  vHistory: JSON.parse(localStorage.getItem('cs_vh')||'[]'),
+  iHistory: JSON.parse(localStorage.getItem('cs_ih')||'[]'),
+  providers: JSON.parse(localStorage.getItem('cs_prov')||'[]'),
+  spent: parseFloat(localStorage.getItem('cs_spent')||'0'),
+  vBusy: false, iBusy: false,
+  vUrl: null, iUrl: null,
+};
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded', () => {
+  if (S.key) {
+    document.getElementById('apiIn').value = S.key;
+    document.getElementById('apiBanner').style.display='none';
+    setSt(true);
+    fetchAllBalances(); // جيب الرصيد الحقيقي فور ما الصفحة تفتح
+  }
+  updateCost('v'); updateCost('i');
+  renderHist('v'); renderHist('i'); renderProviders();
+  ['vPrompt','iPrompt'].forEach(id => {
+    const ta = document.getElementById(id);
+    const cn = id === 'vPrompt' ? 'vChar' : 'iChar';
+    ta.addEventListener('input', () => document.getElementById(cn).textContent = ta.value.length);
+  });
+});
+
+// ── TABS ──
+function switchTab(tab, btn) {
+  ['video','image','apis'].forEach(t => {
+    document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1)).style.display = t===tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // update hero
+  if (tab==='video') {
+    document.getElementById('heroTitle').innerHTML = 'GENERATE<br><span class="ac">CINEMATIC</span><br>AI VIDEO';
+    document.getElementById('heroSub').textContent = 'Professional AI video with Seedance 2.0, Kling 3.0, Veo 3.1 — pay per generation.';
+  } else if (tab==='image') {
+    document.getElementById('heroTitle').innerHTML = 'GENERATE<br><span class="ac">STUNNING</span><br>AI IMAGES';
+    document.getElementById('heroSub').textContent = 'Ultra-detailed AI images with Nano Banana, GPT Image 2.0, Flux Pro — instant results.';
+  } else {
+    document.getElementById('heroTitle').innerHTML = 'MANAGE<br><span class="ac">API</span><br>PROVIDERS';
+    document.getElementById('heroSub').textContent = 'Add any provider. Connect once, use everywhere. Costs calculated automatically.';
+  }
+}
+
+// ── API KEY ──
+function saveKey() {
+  const k = document.getElementById('apiIn').value.trim();
+  if (!k) { toast('Enter your API key', 'er'); return; }
+  S.key = k;
+  localStorage.setItem('cs_key', k);
+  document.getElementById('apiBanner').style.display = 'none';
+  setSt(true);
+  fetchAllBalances();
+  toast('Connected ✓', 'ok');
+}
+document.getElementById('apiIn').addEventListener('keydown', e => { if (e.key==='Enter') saveKey(); });
+
+function setSt(on, er=false) {
+  const d = document.getElementById('sdot'), t = document.getElementById('stxt');
+  d.className = 'sd' + (er?' er':on?' on':'');
+  t.textContent = er ? 'ERROR' : on ? 'CONNECTED' : 'NO KEY';
+}
+
+function updateSpent() {
+  document.getElementById('nbSpent').textContent = '$'+S.spent.toFixed(3);
+}
+
+// ── MODEL CATEGORY FILTER ──
+function filterModels(cat, btn) {
+  document.querySelectorAll('.mcat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('#vModelGrid .mb').forEach(b => {
+    if (cat === 'all') b.classList.remove('mhidden');
+    else b.classList.toggle('mhidden', !b.classList.contains('mcat-' + cat));
+  });
+}
+
+// ── MODE BADGE — يظهر لما تضاف ref image ──
+function updateModeBadge() {
+  const hasRef = S.vRefs.some(r => r);
+  const badge = document.getElementById('vModeBadge');
+  if (badge) badge.style.display = hasRef ? 'block' : 'none';
+}
+
+// ── PICK MODEL — smart: يحفظ T2V و I2V endpoints ──
+function pickModel(btn, tab) {
+  const grid = tab==='v' ? 'vModelGrid' : 'iModelGrid';
+  document.querySelectorAll('#'+grid+' .mb').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+
+  if (tab === 'v') {
+    S.vModel = {
+      mk:    btn.dataset.mk,
+      t2v:   btn.dataset.t2v,
+      i2v:   btn.dataset.i2v,
+      ref2v: btn.dataset.ref2v || btn.dataset.i2v, // fallback
+      rate:  parseFloat(btn.dataset.rate),
+      flat:  btn.dataset.flat === '1'
+    };
+  } else {
+    S.iModel = {
+      mk:    btn.dataset.mk,
+      model: btn.dataset.model,
+      rate:  parseFloat(btn.dataset.rate),
+      flat:  btn.dataset.flat === '1'
+    };
+  }
+  updateCost(tab);
+}
+
+// ── API PROVIDERS PASSWORD LOCK ──
+function unlockApis(btn) {
+  const pw = prompt('🔒 Enter admin password:');
+  if (!pw) return;
+  // hash بسيط — غير الرقم السري اللي انت عايزه
+  const hash = pw.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  if (hash === 749) { // password: costa2089
+    switchTab('apis', btn);
+  } else {
+    toast('Wrong password', 'er');
+  }
+}
+
+// ── COST (LOCAL ESTIMATE + REAL API ESTIMATE) ──
+async function updateCost(tab) {
+  if (tab==='v') {
+    const dur = parseInt(document.getElementById('vDur').value);
+    const res = document.getElementById('vRes').value;
+    let cost = S.vModel.flat ? S.vModel.rate : S.vModel.rate * dur;
+    if (!S.vModel.flat) { if (res==='1080p') cost*=1.5; if (res==='480p') cost*=0.6; }
+    document.getElementById('vCost').textContent = '$'+cost.toFixed(3);
+    // لو عندنا Key — جيب التقدير الحقيقي من API
+    if (S.key) {
+      const real = await fetchModelPrice(S.vModel.model, dur);
+      if (real !== null) {
+        document.getElementById('vCost').textContent = '$'+parseFloat(real).toFixed(3)+' ✓';
+      }
+    }
+  } else {
+    const cnt = parseInt(document.getElementById('iCount').value);
+    const cost = S.iModel.rate * cnt;
+    document.getElementById('iCost').textContent = '$'+cost.toFixed(3);
+    if (S.key) {
+      const real = await fetchModelPrice(S.iModel.model, cnt);
+      if (real !== null) {
+        document.getElementById('iCost').textContent = '$'+parseFloat(real).toFixed(3)+' ✓';
+      }
+    }
+  }
+}
+
+// ── AUDIO ──
+function toggleAud() {
+  S.audOn = !S.audOn;
+  document.getElementById('audSw').className = 'tsw' + (S.audOn?' on':'');
+  updateCost('v');
+}
+
+// ── IMAGE REFS ──
+function openRef(i, tab) {
+  const slot = document.getElementById((tab==='v'?'vref':'iref')+i);
+  if (slot.querySelector('img')) return;
+  S.curSlot = i; S.curTab = tab;
+  document.getElementById(tab==='v'?'vFileIn':'iFileIn').click();
+}
+function handleRef(e, tab) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const id = (tab==='v'?'vref':'iref')+S.curSlot;
+    const slot = document.getElementById(id);
+    let img = slot.querySelector('img');
+    if (!img) { img = document.createElement('img'); slot.appendChild(img); }
+    img.src = ev.target.result;
+    slot.querySelector('svg').style.display='none';
+    slot.querySelector('span:not(.rmv)').style.display='none';
+    if (tab==='v') { S.vRefs[S.curSlot]=ev.target.result; updateModeBadge(); }
+    else S.iRefs[S.curSlot]=ev.target.result;
+    toast('Reference added', 'ok');
+  };
+  r.readAsDataURL(file);
+  e.target.value='';
+}
+function rmRef(e, i, tab) {
+  e.stopPropagation();
+  if (tab==='v') { S.vRefs[i]=null; updateModeBadge(); }
+  else S.iRefs[i]=null;
+  const slot = document.getElementById((tab==='v'?'vref':'iref')+i);
+  const img = slot.querySelector('img'); if (img) img.remove();
+  slot.querySelector('svg').style.display='';
+  slot.querySelector('span:not(.rmv)').style.display='';
+}
+
+// ── ATLAS CLOUD CONFIG ──
+const ATLAS_BASE = 'https://api.atlascloud.ai/api/v1/model';
+
+// ── ATLAS: Upload base64 image → get temp URL ──
+async function atlasUploadBase64(base64DataUrl, key) {
+  // تحويل base64 إلى Blob
+  const arr = base64DataUrl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8 = new Uint8Array(n);
+  while (n--) u8[n] = bstr.charCodeAt(n);
+  const blob = new Blob([u8], { type: mime });
+
+  const fd = new FormData();
+  fd.append('file', blob, 'ref.jpg');
+
+  const res = await fetch(`${ATLAS_BASE}/uploadMedia`, {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + key },
+    body: fd
+  });
+  if (!res.ok) throw new Error('Upload failed: ' + res.status);
+  const data = await res.json();
+  return data?.url || data?.data?.url;
+}
+
+// ── ATLAS: Poll prediction until done ──
+async function atlasPoll(predictionId, key, tab, startPct=40) {
+  const pollUrl = `${ATLAS_BASE}/prediction/${predictionId}`;
+  const maxWait = 360000;
+  const interval = 3000;
+  const start = Date.now();
+  let pollCount = 0;
+
+  while (Date.now() - start < maxWait) {
+    await new Promise(r => setTimeout(r, interval));
+    pollCount++;
+
+    const elapsed = Math.floor((Date.now() - start) / 1000);
+    const elapsedStr = elapsed > 60 ? `${Math.floor(elapsed/60)}m ${elapsed%60}s` : `${elapsed}s`;
+    const pct = Math.min(startPct + pollCount * 4, 92);
+
+    const res = await fetch(pollUrl, {
+      headers: { 'Authorization': 'Bearer ' + key }
+    });
+    if (!res.ok) throw new Error('Poll error: ' + res.status);
+    const raw = await res.json();
+
+    // Atlas response: { data: { status, outputs: [...] } }
+    const dataObj = raw?.data || raw;
+    const status = (dataObj?.status || 'processing').toLowerCase();
+
+    showProg(tab, pct, `${status.toUpperCase()} · POLL #${pollCount} · ${elapsedStr}`);
+
+    if (status === 'completed' || status === 'succeeded' || status === 'success') {
+      showProg(tab, 100, `COMPLETE · ${elapsedStr}`);
+      return dataObj; // بيرجع data object كاملة فيها outputs[]
+    }
+    if (status === 'failed' || status === 'error' || status === 'cancelled') {
+      throw new Error(dataObj?.error || dataObj?.message || 'Generation failed');
+    }
+  }
+  throw new Error('Timeout — generation took too long');
+}
+
+// ── GENERATE ──
+async function generate(tab) {
+  if (tab==='v' && S.vBusy) return;
+  if (tab==='i' && S.iBusy) return;
+  if (!S.key) { document.getElementById('apiBanner').style.display='block'; toast('Connect your Atlas API key first', 'er'); return; }
+  const prompt = document.getElementById(tab==='v'?'vPrompt':'iPrompt').value.trim();
+  if (!prompt) { toast('Enter a prompt', 'er'); return; }
+
+  if (tab==='v') { S.vBusy=true; setBtn('v',true); showProg('v',5,'CONNECTING'); }
+  else { S.iBusy=true; setBtn('i',true); showProg('i',5,'CONNECTING'); }
+
+  try {
+    let payload, cost;
+
+    // ── VIDEO ──
+    if (tab==='v') {
+      const dur    = parseInt(document.getElementById('vDur').value);
+      const res    = document.getElementById('vRes').value;
+      const ratio  = document.getElementById('vRatio').value;
+      const refs   = S.vRefs.filter(r=>r);
+      cost = S.vModel.rate * dur;
+
+      // SMART ROUTING: اختار endpoint بناء على وجود reference images
+      let modelEndpoint;
+      if (refs.length >= 2 && S.vModel.ref2v) {
+        modelEndpoint = S.vModel.ref2v;  // Ref2V (مثل Kling O3)
+      } else if (refs.length >= 1 && S.vModel.i2v) {
+        modelEndpoint = S.vModel.i2v;    // I2V
+      } else {
+        modelEndpoint = S.vModel.t2v;    // T2V (default)
+      }
+
+      payload = {
+        model: modelEndpoint,
+        prompt,
+        duration: dur,
+        resolution: res,
+        ratio,
+        generate_audio: S.audOn,
+        watermark: false
+      };
+
+      // لو في reference images — ارفعها الأول
+      if (refs[0]) {
+        showProg('v', 12, 'UPLOADING REFERENCE');
+        const imgUrl = await atlasUploadBase64(refs[0], S.key);
+        payload.image_url = imgUrl;
+      }
+      if (refs[1]) {
+        const imgUrl2 = await atlasUploadBase64(refs[1], S.key);
+        payload.end_image_url = imgUrl2;
+      }
+
+      showProg('v', 25, 'SUBMITTING REQUEST');
+
+      const submitRes = await fetch(`${ATLAS_BASE}/generateVideo`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + S.key,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!submitRes.ok) {
+        const errData = await submitRes.json().catch(()=>({}));
+        throw new Error(errData?.message || errData?.error || `HTTP ${submitRes.status}`);
+      }
+
+      const submitData = await submitRes.json();
+      const predId = submitData?.data?.id || submitData?.id;
+      if (!predId) throw new Error('No prediction ID returned');
+
+      showProg('v', 35, 'GENERATING FRAMES');
+      const result = await atlasPool(predId, S.key, 'v', 35);
+
+      // Atlas returns: { outputs: ["https://...mp4"] }
+      const url = (result?.outputs && result.outputs[0])
+                || result?.output?.video_url
+                || result?.output?.url
+                || result?.video_url
+                || result?.url;
+      if (!url) throw new Error('No video URL — check Atlas console for details');
+      S.vUrl = url;
+
+      hideProg('v');
+      showOutput('v', url, cost);
+      S.vBusy=false; setBtn('v',false);
+      addHist('v', prompt, url, cost, dur+'s');
+      fetchAllBalances();
+      toast(`✓ Video ready — $${cost.toFixed(3)}`, 'ok');
+
+    // ── IMAGE ──
+    } else {
+      const size = document.getElementById('iSize').value;
+      const cnt  = parseInt(document.getElementById('iCount').value);
+      const refs = S.iRefs.filter(r=>r);
+      cost = S.iModel.rate * cnt;
+
+      payload = {
+        model: S.iModel.model,
+        prompt,
+        image_size: size,
+        num_images: cnt
+      };
+
+      if (refs[0]) {
+        showProg('i', 12, 'UPLOADING REFERENCE');
+        const imgUrl = await atlasUploadBase64(refs[0], S.key);
+        payload.image_url = imgUrl;
+      }
+
+      showProg('i', 25, 'SUBMITTING REQUEST');
+
+      const submitRes = await fetch(`${ATLAS_BASE}/generateImage`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + S.key,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!submitRes.ok) {
+        const errData = await submitRes.json().catch(()=>({}));
+        throw new Error(errData?.message || errData?.error || `HTTP ${submitRes.status}`);
+      }
+
+      const submitData = await submitRes.json();
+      const predId = submitData?.data?.id || submitData?.id;
+      if (!predId) throw new Error('No prediction ID returned');
+
+      showProg('i', 35, 'GENERATING IMAGE');
+      const result = await atlasPool(predId, S.key, 'i', 35);
+
+      // Atlas returns: { outputs: ["https://...png"] }
+      const url = (result?.outputs && result.outputs[0])
+                || result?.output?.image_url
+                || result?.output?.url
+                || result?.image_url
+                || result?.url;
+      if (!url) throw new Error('No image URL — check Atlas console for details');
+      S.iUrl = url;
+
+      hideProg('i');
+      showOutput('i', url, cost);
+      S.iBusy=false; setBtn('i',false);
+      addHist('i', prompt, url, cost, null);
+      fetchAllBalances();
+      toast(`✓ Image ready — $${cost.toFixed(3)}`, 'ok');
+    }
+
+  } catch(err) {
+    hideProg(tab);
+    if (tab==='v') { S.vBusy=false; setBtn('v',false); }
+    else { S.iBusy=false; setBtn('i',false); }
+    setSt(false, true);
+    console.error('Generation error:', err);
+    toast(err.message || 'Generation failed', 'er');
+    setTimeout(() => setSt(true), 3000);
+  }
+}
+
+// alias بسبب استخدامه في الكود القديم
+const atlasPool = atlasPoll;
+
+// ── NETLIFY FUNCTION PROXY ──
+function getProxyUrl(atlasUrl) {
+  if (!atlasUrl) return atlasUrl;
+  return '/.netlify/functions/media?url=' + encodeURIComponent(atlasUrl);
+}
+
+function showOutput(tab, url, realCost) {
+  const finalUrl = getProxyUrl(url);
+
+  if (tab === 'v') {
+    const vid = document.getElementById('vVid');
+    if (vid) {
+      vid.src = finalUrl;
+      vid.style.display = 'block';
+      vid.classList.add('show');
+      vid.load();
+    }
+    document.getElementById('vPH').style.display = 'none';
+    document.getElementById('vDlBtn').disabled = false;
+    document.getElementById('vCorner').textContent = S.vModel.mk.toUpperCase();
+    document.getElementById('vCorner').className = 'out-corner red';
+    document.getElementById('vMModel').textContent = S.vModel.mk.toUpperCase();
+    document.getElementById('vMDur').textContent   = document.getElementById('vDur').value + 's';
+    document.getElementById('vMCost').textContent  = '$' + (realCost||0).toFixed(3);
+    S.vUrl = finalUrl;
+  } else {
+    const img = document.getElementById('iImg');
+    if (img) {
+      img.src = finalUrl;
+      img.style.display = 'block';
+      img.classList.add('show');
+    }
+    document.getElementById('iPH').style.display = 'none';
+    document.getElementById('iDlBtn').disabled = false;
+    document.getElementById('iCorner').textContent = S.iModel.mk.toUpperCase();
+    document.getElementById('iCorner').className = 'out-corner red';
+    document.getElementById('iMModel').textContent = S.iModel.mk.toUpperCase();
+    document.getElementById('iMSize').textContent  = document.getElementById('iSize').value.replace(/_/g,' ').toUpperCase();
+    document.getElementById('iMCost').textContent  = '$' + (realCost||0).toFixed(3);
+    S.iUrl = finalUrl;
+  }
+}
+
+function dlVideo() {
+  if (!S.vUrl) return;
+  const a = document.createElement('a');
+  a.href = S.vUrl;
+  a.download = 'costa-video-' + Date.now() + '.mp4';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Downloading...', 'ok');
+}
+
+function dlImage() {
+  if (!S.iUrl) return;
+  const a = document.createElement('a');
+  a.href = S.iUrl;
+  a.download = 'costa-image-' + Date.now() + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  toast('Downloading...', 'ok');
+}
+function showProg(tab, pct, st) {
+  const ov=document.getElementById(tab+'Prog');
+  const fl=document.getElementById(tab+'Fill');
+  const pe=document.getElementById(tab+'Pct');
+  const se=document.getElementById(tab+'St');
+  if (!ov) return;
+  ov.classList.add('show');
+  document.getElementById(tab==='v'?'vPH':'iPH').style.display='none';
+  const c=2*Math.PI*36, d=(pct/100)*c;
+  if (fl) fl.style.strokeDasharray=d+' '+(c-d);
+  if (pe) pe.textContent=pct+'%';
+  if (se) se.textContent=st;
+}
+function hideProg(tab) { const el=document.getElementById(tab+'Prog'); if(el) el.classList.remove('show'); }
+
+// ── BUTTONS ──
+function setBtn(tab, ld) {
+  const btn=document.getElementById(tab+'GenBtn');
+  const txt=document.getElementById(tab+'BtnTxt');
+  if(btn) btn.classList.toggle('ld',ld);
+  if(txt) txt.textContent=ld?'GENERATING...':(tab==='v'?'GENERATE VIDEO':'GENERATE IMAGE');
+}
+
+function copyUrl(tab) {
+  const url=tab==='v'?S.vUrl:S.iUrl;
+  if (!url) { toast('No output yet','er'); return; }
+  navigator.clipboard.writeText(url).then(()=>toast('URL copied','ok')).catch(()=>toast('Copy failed','er'));
+}
+
+// ── HISTORY ──
+function addHist(tab, prompt, url, cost, dur) {
+  const item={id:Date.now(), prompt, url, cost, dur, mk:(tab==='v'?S.vModel.mk:S.iModel.mk).toUpperCase(), ts:Date.now()};
+  if (tab==='v') { S.vHistory.unshift(item); if (S.vHistory.length>20) S.vHistory.pop(); localStorage.setItem('cs_vh',JSON.stringify(S.vHistory)); }
+  else { S.iHistory.unshift(item); if (S.iHistory.length>20) S.iHistory.pop(); localStorage.setItem('cs_ih',JSON.stringify(S.iHistory)); }
+  renderHist(tab);
+}
+
+function renderHist(tab) {
+  const hist=tab==='v'?S.vHistory:S.iHistory;
+  const grid=document.getElementById(tab==='v'?'vHistGrid':'iHistGrid');
+  if (!hist.length) { grid.innerHTML='<div class="hi-empty">No generations yet</div>'; return; }
+  grid.innerHTML=hist.map(h=>`
+    <div class="hi" onclick="loadHist('${h.id}','${tab}')">
+      <div class="hi-thumb">
+        ${h.url
+          ? (tab==='v'
+            ? `<video src="${h.url}" muted playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0"></video>`
+            : `<img src="${h.url}" alt="">`)
+          : '<div class="hi-ph"><svg viewBox="0 0 24 24" fill="none" stroke-width="1"><rect x="2" y="2" width="20" height="20" rx="2"/></svg></div>'
+        }
+      </div>
+      <div class="hi-info">
+        <div class="hi-model">${h.mk}</div>
+        <div class="hi-prompt">${h.prompt}</div>
+        <div class="hi-cost">$${h.cost.toFixed(3)}${h.dur?' · '+h.dur+'s':''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function loadHist(id, tab) {
+  const hist=tab==='v'?S.vHistory:S.iHistory;
+  const item=hist.find(h=>h.id==id); if (!item||!item.url) return;
+  if (tab==='v') { S.vUrl=item.url; showOutput('v',item.url); document.getElementById('vPrompt').value=item.prompt; }
+  else { S.iUrl=item.url; showOutput('i',item.url); document.getElementById('iPrompt').value=item.prompt; }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── LOGO ICON CHANGE (3 clicks to reveal) ──
+let logoClickCount = 0;
+let logoClickTimer = null;
+
+function handleLogoClick() {
+  logoClickCount++;
+  clearTimeout(logoClickTimer);
+  if (logoClickCount >= 3) {
+    logoClickCount = 0;
+    document.getElementById('logoFileIn').click();
+  } else {
+    logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 1000);
+  }
+}
+
+function handleLogoUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    const img = document.getElementById('logoImg');
+    const def = document.getElementById('logoDefault');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    def.style.display = 'none';
+    localStorage.setItem('cs_logo', ev.target.result);
+    toast('Icon updated ✓', 'ok');
+  };
+  r.readAsDataURL(file);
+  e.target.value = '';
+}
+
+// ── LOAD SAVED LOGO ──
+(function loadLogo() {
+  const saved = localStorage.getItem('cs_logo');
+  if (saved) {
+    const img = document.getElementById('logoImg');
+    const def = document.getElementById('logoDefault');
+    img.src = saved; img.style.display = 'block'; def.style.display = 'none';
+  }
+})();
+
+// ── BALANCE DROPDOWN TOGGLE ──
+document.getElementById('navBal').addEventListener('click', function(e) {
+  const dd = document.getElementById('balDropdown');
+  dd.classList.toggle('show');
+  if (dd.classList.contains('show')) fetchAllBalances();
+});
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('navBal').contains(e.target)) {
+    document.getElementById('balDropdown').classList.remove('show');
+  }
+});
+
+// ── FAL.AI REAL BALANCE ──
+async function fetchFalBalance(key) {
+  try {
+    const res = await fetch('https://api.fal.ai/v1/account/billing?expand=credits', {
+      headers: { 'Authorization': 'Key ' + key }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.credits?.current_balance ?? null;
+  } catch { return null; }
+}
+
+// ── ATLAS CLOUD — no public balance API, use generation response cost tracking ──
+// Atlas مش عندهم Public Balance Endpoint في الـ Docs
+// بنتتبع الـ usage locally بناء على الـ Response data
+async function fetchAtlasBalance(key) {
+  // نجرب نعمل request خفيفة لـ /v1/models عشان نتحقق إن الـ Key شغال
+  try {
+    const res = await fetch('https://api.atlascloud.ai/api/v1/models', {
+      headers: { 'Authorization': 'Bearer ' + key }
+    });
+    if (res.ok) return 'CONNECTED'; // Atlas شغال بس مش بيكشف الرصيد
+    return null;
+  } catch { return null; }
+}
+
+// ── FETCH ALL PROVIDERS BALANCE ──
+async function fetchAllBalances() {
+  const dd = document.getElementById('balDropdown');
+  const nbBal = document.getElementById('nbBal');
+
+  if (!S.key) {
+    nbBal.textContent = '—';
+    dd.innerHTML = '<div class="bal-row"><span class="bal-prov">No API key connected</span></div>';
+    return;
+  }
+
+  nbBal.textContent = '...';
+  dd.innerHTML = `<div class="bal-row"><span class="bal-prov">ATLAS CLOUD</span><span class="bal-amount loading">CHECKING...</span></div>`;
+
+  // Atlas: verify key is valid
+  const atlasStatus = await fetchAtlasBalance(S.key);
+
+  let html = `<div class="bal-row">
+    <span class="bal-prov">ATLAS CLOUD</span>
+    ${atlasStatus === 'CONNECTED'
+      ? `<span class="bal-amount" style="color:var(--red);font-size:10px;">✓ CONNECTED<br><span style="color:var(--w40);font-size:9px;">Track at atlascloud.ai/console</span></span>`
+      : `<span class="bal-amount" style="color:var(--red);">KEY ERROR</span>`
+    }
+  </div>`;
+
+  // Extra providers
+  S.providers.forEach(p => {
+    html += `<div class="bal-row"><span class="bal-prov">${p.name}</span><span class="bal-amount" style="color:var(--w40);font-size:9px;">ADDED</span></div>`;
+  });
+
+  html += `<div class="atlas-note">⚠ Atlas doesn't expose a balance API. Check spending at <strong>atlascloud.ai/console</strong></div>`;
+
+  dd.innerHTML = html;
+
+  if (atlasStatus === 'CONNECTED') {
+    nbBal.textContent = '✓';
+    nbBal.style.color = 'var(--red)';
+  } else {
+    nbBal.textContent = 'ERR';
+    nbBal.style.color = 'var(--red)';
+  }
+}
+
+
+// ═══════════════════════════════════════
+// COSTA STUDIO — ANIMATION ENGINE
+// ═══════════════════════════════════════
+
+// ── CURSOR GLOW ──
+const cg = document.getElementById('cursorGlow');
+let mx=0, my=0, cx=0, cy=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function animCursor(){
+  cx += (mx-cx)*.08; cy += (my-cy)*.08;
+  if(cg) cg.style.transform = `translate(${cx-150}px,${cy-150}px)`;
+  requestAnimationFrame(animCursor);
+})();
+
+// ── MAGNETIC GENERATE BUTTON ──
+function initMagnetic() {
+  document.querySelectorAll('.gen-btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width/2);
+      const dy = e.clientY - (r.top + r.height/2);
+      btn.style.transform = `translate(${dx*.18}px,${dy*.18}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+}
+initMagnetic();
+
+// ── TYPING PLACEHOLDER ──
+const prompts = [
+  'Cyberpunk Cairo street at night, Egyptian male walking through neon-lit alleys, rain-soaked asphalt, volumetric fog, ARRI ALEXA 35...',
+  'GTA-style aerial shot of downtown Cairo, cinematic golden hour, dramatic shadows, bold colors...',
+  'Dark editorial fashion film, character in cyberpunk outfit, red neon reflections, dolly-in movement...',
+  'Futuristic marketplace in Cairo 2089, holographic billboards in Arabic, atmospheric fog...',
+];
+let pIdx=0, cIdx=0, deleting=false, ptimer=null;
+function typePrompt() {
+  const ta = document.getElementById('vPrompt');
+  if (!ta || document.activeElement === ta) { ptimer=setTimeout(typePrompt,200); return; }
+  const cur = prompts[pIdx];
+  if (!deleting) {
+    if (cIdx < cur.length) { ta.placeholder = cur.slice(0,++cIdx)+'|'; ptimer=setTimeout(typePrompt,38); }
+    else { deleting=true; ptimer=setTimeout(typePrompt,2200); }
+  } else {
+    if (cIdx > 0) { ta.placeholder = cur.slice(0,--cIdx)+'|'; ptimer=setTimeout(typePrompt,16); }
+    else { deleting=false; pIdx=(pIdx+1)%prompts.length; ptimer=setTimeout(typePrompt,400); }
+  }
+}
+typePrompt();
+
+// ── PARTICLE BURST on generation complete ──
+function spawnParticles(el) {
+  const r = el.getBoundingClientRect();
+  const cx2 = r.left + r.width/2, cy2 = r.top + r.height/2;
+  for (let i=0; i<18; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const angle = (i/18)*Math.PI*2;
+    const dist = 60 + Math.random()*80;
+    p.style.cssText = `left:${cx2}px;top:${cy2}px;position:fixed;z-index:9990;`+
+      `--tx:translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px);`+
+      `animation-delay:${Math.random()*.1}s;`+
+      `width:${3+Math.random()*4}px;height:${3+Math.random()*4}px;`+
+      `background:${Math.random()>.5?'var(--red)':'rgba(255,255,255,.6)'};`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 900);
+  }
+}
+
+// Patch showOutput to trigger particles
+const _showOutput = showOutput;
+showOutput = function(tab, url, cost) {
+  _showOutput(tab, url, cost);
+  const screen = document.querySelector('.out-screen');
+  if (screen) spawnParticles(screen);
+  // Remove gen class from corner
+  setTimeout(()=>{
+    const c=document.getElementById(tab+'Corner');
+    if(c) c.classList.remove('gen');
+  }, 100);
+};
+
+// Patch showProg to add gen class
+const _showProg = showProg;
+showProg = function(tab, pct, st) {
+  _showProg(tab, pct, st);
+  if (pct < 100) {
+    const c=document.getElementById(tab+'Corner');
+    if(c) c.classList.add('gen');
+  }
+};
+
+// ── TAB SWITCH MORPH ──
+const _switchTab = switchTab;
+switchTab = function(tab, btn) {
+  _switchTab(tab, btn);
+  ['tabVideo','tabImage','tabApis'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && el.style.display!=='none') {
+      el.classList.remove('tab-content-enter');
+      void el.offsetWidth;
+      el.classList.add('tab-content-enter');
+    }
+  });
+};
+
+// ── LIQUID GLASS TILT on model buttons ──
+document.querySelectorAll('.mb').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - .5;
+    const y = (e.clientY - r.top) / r.height - .5;
+    btn.style.transform = `translateY(-3px) perspective(400px) rotateY(${x*12}deg) rotateX(${-y*12}deg) scale(1.02)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// ── HERO TITLE GLITCH re-trigger on tab switch ──
+function retrigerGlitch(){
+  const h=document.getElementById('heroTitle');
+  if(!h)return;
+  h.style.animation='none'; void h.offsetWidth;
+  h.style.animation='';
+}
+
+
+// ═══════════════════════════════════════
+// CUSTOM SELECT SYSTEM
+// ═══════════════════════════════════════
+function buildCustomSelect(nativeSelect) {
+  if (nativeSelect.dataset.customized) return;
+  nativeSelect.dataset.customized = '1';
+  nativeSelect.style.display = 'none';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'cs-wrap';
+
+  const trigger = document.createElement('div');
+  trigger.className = 'cs-trigger';
+  trigger.innerHTML = `<span class="cs-val">${nativeSelect.options[nativeSelect.selectedIndex]?.text || ''}</span><span class="cs-arrow"></span>`;
+
+  const dd = document.createElement('div');
+  dd.className = 'cs-dropdown';
+
+  Array.from(nativeSelect.options).forEach((opt, i) => {
+    const o = document.createElement('div');
+    o.className = 'cs-opt' + (i === nativeSelect.selectedIndex ? ' selected' : '');
+    o.textContent = opt.text;
+    o.dataset.val = opt.value;
+    o.addEventListener('click', e => {
+      e.stopPropagation();
+      nativeSelect.value = opt.value;
+      nativeSelect.dispatchEvent(new Event('change'));
+      trigger.querySelector('.cs-val').textContent = opt.text;
+      dd.querySelectorAll('.cs-opt').forEach(x => x.classList.remove('selected'));
+      o.classList.add('selected');
+      dd.classList.remove('open');
+      trigger.classList.remove('open');
+    });
+    dd.appendChild(o);
+  });
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = dd.classList.contains('open');
+    document.querySelectorAll('.cs-dropdown.open').forEach(x => { x.classList.remove('open'); x.previousSibling?.classList?.remove?.('open'); });
+    if (!isOpen) { dd.classList.add('open'); trigger.classList.add('open'); }
+  });
+
+  wrap.appendChild(trigger);
+  wrap.appendChild(dd);
+  nativeSelect.parentNode.insertBefore(wrap, nativeSelect);
+  nativeSelect.parentNode.appendChild(nativeSelect);
+}
+
+function initAllSelects() {
+  document.querySelectorAll('select').forEach(buildCustomSelect);
+}
+
+document.addEventListener('click', () => {
+  document.querySelectorAll('.cs-dropdown.open').forEach(x => {
+    x.classList.remove('open');
+    x.previousSibling?.classList?.remove?.('open');
+  });
+});
+
+// ═══════════════════════════════════════
+// ATLAS CLOUD PRICING DATA (real from site)
+// ═══════════════════════════════════════
+const ATLAS_VIDEO = [
+  { name:'Seedance 2.0',     mk:'sd2-std',   rate:0.112, unit:'sec', type:'video' },
+  { name:'Seedance 2.0 Fast',mk:'sd2-fast',  rate:0.09,  unit:'sec', type:'video' },
+  { name:'HappyHorse 1.0',   mk:'hh',        rate:0.14,  unit:'sec', type:'video' },
+  { name:'Kling 3.0',        mk:'kling',     rate:0.10,  unit:'sec', type:'video' },
+  { name:'WAN 2.7',          mk:'wan',       rate:0.10,  unit:'sec', type:'video' },
+  { name:'Veo 3.1',          mk:'veo',       rate:0.20,  unit:'sec', type:'video' },
+];
+const ATLAS_IMG = [
+  { name:'Nano Banana Pro',  mk:'nb',        rate:0.005, unit:'img', type:'image' },
+  { name:'GPT Image 2.0',    mk:'gpt',       rate:0.04,  unit:'img', type:'image' },
+  { name:'Flux Pro 1.1',     mk:'flux',      rate:0.055, unit:'img', type:'image' },
+  { name:'Flux Dev',         mk:'fluxdev',   rate:0.025, unit:'img', type:'image' },
+  { name:'Ideogram V2',      mk:'ideogram',  rate:0.08,  unit:'img', type:'image' },
+  { name:'Recraft V3',       mk:'recraft',   rate:0.04,  unit:'img', type:'image' },
+];
+
+function calcUpdate() {
+  const budget = parseFloat(document.getElementById('calcBudget')?.value) || 50;
+  const dur    = parseFloat(document.getElementById('calcDur')?.value)    || 15;
+  const imgs   = parseInt(document.getElementById('calcImgCount')?.value) || 1;
+
+  document.getElementById('calcBudgetDisplay').textContent = '$' + budget.toFixed(0);
+
+  let bestVid = null, bestImg = null;
+
+  // Video cards
+  const vg = document.getElementById('calcVideoGrid');
+  if (vg) {
+    vg.innerHTML = ATLAS_VIDEO.map(m => {
+      const costEach = m.rate * dur;
+      const count    = Math.floor(budget / costEach);
+      if (!bestVid || count > bestVid.count) bestVid = { name: m.name, count };
+      return `<div class="calc-model-card">
+        <div class="cmc-provider">ATLAS CLOUD · VIDEO</div>
+        <div class="cmc-name">${m.name}</div>
+        <div class="cmc-rate">$${m.rate}/sec · ${dur}s = $${costEach.toFixed(3)}/vid</div>
+        <div class="cmc-result big">${count}</div>
+        <div class="cmc-unit">videos from $${budget}</div>
+        <div class="cmc-cost-each">$${costEach.toFixed(3)} each</div>
+      </div>`;
+    }).join('');
+  }
+
+  // Image cards
+  const ig = document.getElementById('calcImgGrid');
+  if (ig) {
+    ig.innerHTML = ATLAS_IMG.map(m => {
+      const costEach = m.rate * imgs;
+      const count    = Math.floor(budget / costEach);
+      if (!bestImg || count > bestImg.count) bestImg = { name: m.name, count };
+      return `<div class="calc-model-card">
+        <div class="cmc-provider">ATLAS CLOUD · IMAGE</div>
+        <div class="cmc-name">${m.name}</div>
+        <div class="cmc-rate">$${m.rate}/image · ${imgs} img = $${costEach.toFixed(3)}</div>
+        <div class="cmc-result big">${count}</div>
+        <div class="cmc-unit">images from $${budget}</div>
+        <div class="cmc-cost-each">$${costEach.toFixed(3)} each batch</div>
+      </div>`;
+    }).join('');
+  }
+
+  if (bestVid) document.getElementById('calcBestVid').textContent = bestVid.name + ' (' + bestVid.count + ' vids)';
+  if (bestImg) document.getElementById('calcBestImg').textContent = bestImg.name + ' (' + bestImg.count + ' imgs)';
+}
+
+// ═══════════════════════════════════════
+// PROMPT LIBRARY
+// ═══════════════════════════════════════
+const QUICK_TEMPLATES = [
+  { name:'Cyberpunk Cairo Night', tag:'Cinematic',
+    text:'Futuristic Cairo street at 2 AM, Egyptian male in tactical jacket, neon Arabic signs reflected on wet asphalt, volumetric fog, dolly-in camera, ARRI ALEXA 35, red and white neon color palette, cinematic depth of field' },
+  { name:'GTA-Style Opener', tag:'GTA',
+    text:'GTA loading screen art style, Cairo intersection golden hour, Egyptian male in streetwear, cel-shaded illustration, bold graphic, urban chaos, low-angle dolly-out, high contrast shadows' },
+  { name:'Dark Editorial', tag:'Fashion',
+    text:'Dark cinematic editorial, dramatic side lighting, Egyptian model in designer outfit, rain-soaked black background, minimal composition, red accent glow, ultra-sharp, magazine cover quality' },
+  { name:'Comic Book Scene', tag:'Marvel',
+    text:'Marvel comic art style, dynamic action pose, Egyptian superhero, bold ink outlines, halftone shading, dramatic angle, red and white color scheme, explosive energy lines' },
+  { name:'Cyberpunk Portrait', tag:'Character',
+    text:'Cyberpunk character portrait, Egyptian face, glowing cybernetic implants, dark background, red neon rim light, ultra-detailed skin texture, cinematic close-up, 8K' },
+  { name:'Motion Blur Chase', tag:'Action',
+    text:'High speed chase through Cairo streets, motion blur, FPV drone camera, neon lights streaking, cinematic slow motion, action movie style, Kling 3.0 motion preset' },
+  { name:'Brand Reveal', tag:'Commercial',
+    text:'Luxury brand identity reveal, logo emerging from particles, dark void background, red accent particles, anamorphic lens flare, cinematic logo animation, high-end commercial style' },
+  { name:'Neo Cairo 2089', tag:'Sci-Fi',
+    text:'Neo Cairo 2089, towering skyscrapers with Arabic script holograms, flying vehicles, atmospheric haze, golden light through smog, epic establishing shot, ultra-wide lens' },
+];
+
+let promptLibrary = JSON.parse(localStorage.getItem('cs_prompts') || '[]');
+let pafImgData = null;
+let pafImgUrl  = null;
+
+function renderPromptLib() {
+  const grid = document.getElementById('promptLibGrid');
+  const count = document.getElementById('promptCount');
+  if (!grid) return;
+  if (count) count.textContent = promptLibrary.length;
+
+  if (!promptLibrary.length) {
+    grid.innerHTML = '<div class="hi-empty" style="grid-column:1/-1">No saved prompts yet — add one above</div>';
+    return;
+  }
+
+  grid.innerHTML = promptLibrary.map((p, i) => `
+    <div class="prompt-lib-card" style="animation:fadeUp .4s ${i*.05}s both">
+      <div class="plc-thumb">
+        ${p.imgUrl
+          ? `<img src="${p.imgUrl}" alt="">`
+          : `<div class="plc-thumb-ph"><svg viewBox="0 0 24 24" fill="none" stroke-width="1" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg></div>`
+        }
+      </div>
+      <div class="plc-tag">${p.tag || 'PROMPT'}</div>
+      <div class="plc-title">${p.title || 'Untitled'}</div>
+      <div class="plc-text">${p.text}</div>
+      <div class="plc-actions">
+        <button class="plc-btn use" onclick="usePrompt(${i})">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" width="10" height="10"><polygon points="2,1 10,6 2,11"/></svg>
+          USE
+        </button>
+        <button class="plc-btn" onclick="copyPrompt(${i})">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" width="10" height="10"><rect x="3" y="3" width="8" height="8" rx="1"/><path d="M1 1h7v2"/></svg>
+          COPY
+        </button>
+        <button class="plc-btn" onclick="deletePrompt(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function triggerPafImg() { document.getElementById('pafImgIn').click(); }
+function handlePafImg(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    pafImgData = ev.target.result;
+    document.getElementById('pafImgName').textContent = '📎 ' + file.name;
+  };
+  r.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function savePrompt() {
+  const title = document.getElementById('pafTitle').value.trim();
+  const tag   = document.getElementById('pafTag').value.trim();
+  const text  = document.getElementById('pafText').value.trim();
+  if (!text) { toast('Write a prompt first', 'er'); return; }
+  promptLibrary.unshift({ id: Date.now(), title: title||'Untitled', tag: tag||'PROMPT', text, imgUrl: pafImgData });
+  localStorage.setItem('cs_prompts', JSON.stringify(promptLibrary));
+  document.getElementById('pafTitle').value = '';
+  document.getElementById('pafTag').value = '';
+  document.getElementById('pafText').value = '';
+  document.getElementById('pafImgName').textContent = '';
+  pafImgData = null;
+  renderPromptLib();
+  toast('Prompt saved ✓', 'ok');
+}
+
+function usePrompt(i) {
+  const p = promptLibrary[i];
+  document.getElementById('vPrompt').value = p.text;
+  document.getElementById('vChar').textContent = p.text.length;
+  switchTab('video', document.querySelector('.tab-btn'));
+  toast('Prompt loaded into Video Studio', 'ok');
+}
+
+function copyPrompt(i) {
+  navigator.clipboard.writeText(promptLibrary[i].text).then(() => toast('Copied ✓', 'ok'));
+}
+
+function deletePrompt(i) {
+  promptLibrary.splice(i, 1);
+  localStorage.setItem('cs_prompts', JSON.stringify(promptLibrary));
+  renderPromptLib();
+  toast('Prompt deleted', 'ok');
+}
+
+// Quick Templates grid
+function renderQuickTemplates() {
+  const grid = document.getElementById('qtGrid');
+  if (!grid) return;
+  grid.innerHTML = QUICK_TEMPLATES.map((t, i) => `
+    <div class="qt-btn" onclick="useQuickTemplate(${i})">
+      <div class="qt-name">${t.name}</div>
+      <div class="qt-preview">${t.text}</div>
+    </div>
+  `).join('');
+}
+
+function useQuickTemplate(i) {
+  const t = QUICK_TEMPLATES[i];
+  document.getElementById('vPrompt').value = t.text;
+  document.getElementById('vChar').textContent = t.text.length;
+  switchTab('video', document.querySelector('.tab-btn'));
+  toast(t.name + ' loaded ✓', 'ok');
+}
+
+// ── SHOT BUILDER ──
+const SB_OPTIONS = {
+  Camera:   ['ARRI ALEXA 35','RED MONSTRO 8K','IMAX','Sony Venice 2','iPhone handheld'],
+  Movement: ['Dolly In','Dolly Out','Orbit 360','Crash Zoom','FPV Drone','Static','Handheld shake','Rack Focus'],
+  Location: ['Cairo alley at night','Cyberpunk street','Dark studio','Desert dunes','Rooftop at sunset','Futuristic marketplace'],
+  Lighting: ['Neon red and white','Golden hour','Volumetric fog','Dramatic side light','Rim light only','Low key shadows'],
+  Mood:     ['Dark cinematic','Epic action','Intimate close-up','Tense thriller','Dreamy slow motion','Gritty documentary'],
+};
+const sbState = {};
+
+function renderShotBuilder() {
+  const g = document.getElementById('sbGrid');
+  if (!g) return;
+  g.innerHTML = Object.entries(SB_OPTIONS).map(([key, opts]) => `
+    <div class="sg">
+      <label>${key}</label>
+      <select onchange="sbState['${key}']=this.value;buildShotPrompt()" data-sb="${key}">
+        <option value="">— ${key}</option>
+        ${opts.map(o => `<option value="${o}">${o}</option>`).join('')}
+      </select>
+    </div>
+  `).join('');
+  initAllSelects();
+}
+
+function buildShotPrompt() {
+  const parts = [];
+  if (sbState.Location) parts.push(sbState.Location);
+  if (sbState.Camera)   parts.push(`shot on ${sbState.Camera}`);
+  if (sbState.Movement) parts.push(`${sbState.Movement} camera movement`);
+  if (sbState.Lighting) parts.push(sbState.Lighting);
+  if (sbState.Mood)     parts.push(sbState.Mood);
+  parts.push('cinematic, ultra-detailed, high production value');
+  const result = document.getElementById('sbResult');
+  if (result) result.innerHTML = parts.map(p => `<em>${p}</em>`).join(', ');
+}
+
+function useShotPrompt() {
+  const r = document.getElementById('sbResult');
+  if (!r || r.textContent.includes('اختار')) { toast('Build a shot first', 'er'); return; }
+  const text = r.textContent;
+  document.getElementById('vPrompt').value = text;
+  document.getElementById('vChar').textContent = text.length;
+  switchTab('video', document.querySelector('.tab-btn'));
+  toast('Shot prompt loaded ✓', 'ok');
+}
+
+// ═══════════════════════════════════════
+// CANVAS SYSTEM
+// ═══════════════════════════════════════
+let canvasScale = 1, canvasPanX = 0, canvasPanY = 0;
+let canvasTool = 'select';
+let isDraggingNode = false, dragNode = null, dragOffX = 0, dragOffY = 0;
+let isPanning = false, panStartX = 0, panStartY = 0, panStartPX = 0, panStartPY = 0;
+let selectedNode = null;
+let connectingFrom = null; // { nodeId, side }
+let connections = JSON.parse(localStorage.getItem('cs_conns') || '[]');
+let nodes = JSON.parse(localStorage.getItem('cs_nodes') || '[]');
+let nodeCounter = nodes.length || 0;
+
+const NODE_TYPES = {
+  prompt: { icon:'PR', title:'Prompt Node', color:'var(--red)' },
+  image:  { icon:'IMG', title:'Image Node', color:'#2979ff' },
+  video:  { icon:'VID', title:'Video Node', color:'#00c853' },
+  note:   { icon:'///', title:'Note', color:'#e8162a' },
+};
+
+function applyCanvasTransform() {
+  const vp = document.getElementById('canvasVP');
+  if (vp) vp.style.transform = `translate(${canvasPanX}px,${canvasPanY}px) scale(${canvasScale})`;
+  const lbl = document.getElementById('zoomLabel');
+  if (lbl) lbl.textContent = Math.round(canvasScale*100) + '%';
+}
+
+function setCanvasTool(t) {
+  canvasTool = t;
+  document.querySelectorAll('.ct-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ct' + t.charAt(0).toUpperCase() + t.slice(1))?.classList.add('active');
+}
+
+function addNode(type) {
+  const vp = document.getElementById('canvasVP');
+  if (!vp) return;
+  const id = 'n' + (++nodeCounter);
+  const x = (300 - canvasPanX) / canvasScale + Math.random()*60;
+  const y = (200 - canvasPanY) / canvasScale + Math.random()*60;
+  const n = { id, type, x, y, text: '', imgUrl: null };
+  nodes.push(n);
+  saveCanvasState();
+  renderNode(n, vp);
+  drawConnections();
+  toast(NODE_TYPES[type].title + ' added', 'ok');
+}
+
+function renderNode(n, vp) {
+  const cfg = NODE_TYPES[n.type] || NODE_TYPES.prompt;
+  const el = document.createElement('div');
+  el.className = 'c-node';
+  el.id = 'node_' + n.id;
+  el.style.left = n.x + 'px';
+  el.style.top  = n.y + 'px';
+  el.style.animation = 'scaleIn .25s cubic-bezier(.4,0,.2,1)';
+
+  // Body content حسب نوع الـ node
+  let bodyExtra = '';
+  if (n.type === 'image' || n.type === 'prompt') {
+    bodyExtra = `
+      <div style="margin-top:8px;display:flex;gap:6px;">
+        <button class="cn-ft-btn" onclick="nodeUploadImg('${n.id}')">📎 ATTACH IMAGE</button>
+      </div>
+      ${n.imgUrl ? `<img class="cn-img show" id="nimg_${n.id}" src="${n.imgUrl}" alt="">` : `<img class="cn-img" id="nimg_${n.id}" src="" alt="">`}
+    `;
+  }
+  if (n.type === 'video') {
+    bodyExtra = `
+      <div style="margin-top:8px;">
+        ${n.videoUrl
+          ? `<video class="cn-img show" id="nvid_${n.id}" src="${n.videoUrl}" style="max-height:100px;width:100%;border-radius:6px;object-fit:cover;" muted playsinline loop onmouseenter="this.play()" onmouseleave="this.pause()"></video>`
+          : `<div id="nvid_${n.id}" style="display:none"></div>`
+        }
+        <button class="cn-ft-btn" style="margin-top:6px;" onclick="nodeUploadVideo('${n.id}')">🎬 ATTACH VIDEO</button>
+      </div>
+    `;
+  }
+
+  el.innerHTML = `
+    <div class="cn-port in"  data-node="${n.id}" data-side="in"  title="Drag from here to connect"></div>
+    <div class="cn-port out" data-node="${n.id}" data-side="out" title="Drag from here to connect"></div>
+    <div class="cn-header">
+      <div class="cn-icon" style="background:${cfg.color}">${cfg.icon}</div>
+      <div class="cn-title">${cfg.title}</div>
+      <button class="cn-del" onclick="deleteNode('${n.id}')">✕</button>
+    </div>
+    <div class="cn-body">
+      <textarea placeholder="Type here..." rows="3" oninput="nodeTextChange('${n.id}',this.value)">${n.text||''}</textarea>
+      ${bodyExtra}
+    </div>
+    <div class="cn-footer">
+      ${n.type === 'prompt' ? `<button class="cn-ft-btn send" onclick="sendNodeToStudio('${n.id}')">→ VIDEO STUDIO</button>` : ''}
+      ${n.type === 'image'  ? `<button class="cn-ft-btn send" onclick="sendNodeImgToRef('${n.id}')">→ REF SLOT</button>` : ''}
+      <button class="cn-ft-btn" onclick="duplicateNode('${n.id}')">⧉ COPY</button>
+    </div>
+  `;
+
+  // ── NODE DRAG ──
+  el.addEventListener('mousedown', e => {
+    if (e.target.closest('.cn-del,.cn-ft-btn,.cn-port,textarea,button,video,img')) return;
+    isDraggingNode = true; dragNode = n.id;
+    const rect = el.getBoundingClientRect();
+    dragOffX = (e.clientX - rect.left) / canvasScale;
+    dragOffY = (e.clientY - rect.top)  / canvasScale;
+    el.classList.add('dragging');
+    selectNode(n.id);
+    e.preventDefault();
+  });
+
+  // ── PORT DRAG — drag wire to connect ──
+  el.querySelectorAll('.cn-port').forEach(port => {
+    // mousedown → start drawing temp wire
+    port.addEventListener('mousedown', e => {
+      e.stopPropagation(); e.preventDefault();
+      const nid  = port.dataset.node;
+      const side = port.dataset.side;
+
+      if (!connectingFrom) {
+        // بدأ connection
+        connectingFrom = { nodeId: nid, side };
+        port.classList.add('connecting');
+        // ارسم wire مؤقتة أثناء الـ drag
+        startTempWire(port, e);
+        toast('→ Drag to another port to connect', 'ok');
+      } else {
+        // إنهاء connection
+        if (connectingFrom.nodeId !== nid && connectingFrom.side !== side) {
+          const from = connectingFrom.side === 'out' ? connectingFrom.nodeId : nid;
+          const to   = connectingFrom.side === 'out' ? nid : connectingFrom.nodeId;
+          if (!connections.find(c => c.from === from && c.to === to)) {
+            connections.push({ from, to });
+            saveCanvasState();
+            drawConnections();
+            toast('✓ Connected', 'ok');
+          }
+        }
+        cancelTempWire();
+        document.querySelectorAll('.cn-port').forEach(p => {
+          p.classList.remove('connecting');
+          p.style.background = '';
+        });
+        connectingFrom = null;
+      }
+    });
+  });
+
+  vp.appendChild(el);
+}
+
+// ── TEMP WIRE أثناء الـ drag ──
+let _tempWire = null;
+function startTempWire(fromPort, startE) {
+  const svg = document.getElementById('canvasSvg');
+  if (!svg) return;
+  _tempWire = document.createElementNS('http://www.w3.org/2000/svg','path');
+  _tempWire.setAttribute('class','conn-path');
+  _tempWire.style.opacity = '.5';
+  _tempWire.style.strokeDasharray = '6 4';
+  svg.appendChild(_tempWire);
+
+  const vp = document.getElementById('canvasVP');
+  function onMove(e) {
+    if (!_tempWire || !connectingFrom) return;
+    const fromNode = nodes.find(x => x.id === connectingFrom.nodeId);
+    if (!fromNode) return;
+    const vpRect = vp.getBoundingClientRect();
+    const x1 = fromNode.x + (connectingFrom.side === 'out' ? 184 : 0);
+    const y1 = fromNode.y + 36;
+    const x2 = (e.clientX - vpRect.left - canvasPanX) / canvasScale;
+    const y2 = (e.clientY - vpRect.top  - canvasPanY) / canvasScale;
+    const cx = (x1+x2)/2;
+    _tempWire.setAttribute('d', `M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}`);
+  }
+  function onUp(e) {
+    // لو عمل mouseup على background — cancel
+    if (!e.target.closest('.cn-port')) cancelTempWire();
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+function cancelTempWire() {
+  if (_tempWire) { _tempWire.remove(); _tempWire = null; }
+  document.querySelectorAll('.cn-port').forEach(p => p.classList.remove('connecting'));
+  connectingFrom = null;
+}
+
+// ── SEND IMAGE NODE → REF SLOT ──
+function sendNodeImgToRef(id) {
+  const n = nodes.find(x => x.id === id);
+  if (!n || !n.imgUrl) { toast('No image in this node', 'er'); return; }
+  // ضع الصورة في أول ref slot فاضي
+  const slot = S.vRefs.findIndex(r => !r);
+  if (slot === -1) { toast('All ref slots full', 'er'); return; }
+  S.vRefs[slot] = n.imgUrl;
+  // update UI
+  const slotEl = document.getElementById('vref' + slot);
+  if (slotEl) {
+    let img = slotEl.querySelector('img');
+    if (!img) { img = document.createElement('img'); slotEl.appendChild(img); }
+    img.src = n.imgUrl;
+    slotEl.querySelector('svg').style.display = 'none';
+    slotEl.querySelector('span:not(.rmv)').style.display = 'none';
+  }
+  updateModeBadge();
+  switchTab('video', document.querySelector('.tab-btn'));
+  toast('✓ Image sent to Ref Slot ' + (slot+1), 'ok');
+}
+
+// ── UPLOAD VIDEO TO NODE ──
+function nodeUploadVideo(id) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'video/*';
+  inp.onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    const url = URL.createObjectURL(file);
+    const n = nodes.find(x => x.id === id);
+    if (n) { n.videoUrl = url; }
+    const vidEl = document.getElementById('nvid_' + id);
+    if (vidEl && vidEl.tagName === 'VIDEO') {
+      vidEl.src = url; vidEl.style.display = 'block';
+    } else {
+      // re-render node
+      renderAllNodes();
+    }
+    toast('Video attached', 'ok');
+  };
+  inp.click();
+}
+
+function renderAllNodes() {
+  const vp = document.getElementById('canvasVP');
+  if (!vp) return;
+  vp.querySelectorAll('.c-node').forEach(n => n.remove());
+  nodes.forEach(n => renderNode(n, vp));
+  drawConnections();
+}
+
+function drawConnections() {
+  const svg = document.getElementById('canvasSvg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  connections.forEach((c, i) => {
+    const fromEl = document.getElementById('node_' + c.from);
+    const toEl   = document.getElementById('node_' + c.to);
+    if (!fromEl || !toEl) return;
+
+    const fn = nodes.find(x => x.id === c.from);
+    const tn = nodes.find(x => x.id === c.to);
+    if (!fn || !tn) return;
+
+    // حساب الـ coordinates مباشرة من node position بدون getBoundingClientRect
+    const x1 = fn.x + 180; // right edge of node (width ~180px)
+    const y1 = fn.y + 36;  // mid height of header
+    const x2 = tn.x;       // left edge
+    const y2 = tn.y + 36;
+
+    const cx = (x1 + x2) / 2;
+    const d  = `M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2}`;
+
+    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    bg.setAttribute('d', d);
+    bg.setAttribute('class', 'conn-path-bg');
+    bg.addEventListener('click', () => {
+      connections.splice(i, 1);
+      saveCanvasState();
+      drawConnections();
+    });
+    svg.appendChild(bg);
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('class', 'conn-path');
+    svg.appendChild(path);
+  });
+}
+
+function selectNode(id) {
+  document.querySelectorAll('.c-node').forEach(n => n.classList.remove('selected'));
+  selectedNode = id;
+  document.getElementById('node_' + id)?.classList.add('selected');
+}
+
+function deleteNode(id) {
+  nodes = nodes.filter(n => n.id !== id);
+  connections = connections.filter(c => c.from !== id && c.to !== id);
+  document.getElementById('node_' + id)?.remove();
+  saveCanvasState();
+  drawConnections();
+}
+
+function duplicateNode(id) {
+  const n = nodes.find(x => x.id === id);
+  if (!n) return;
+  const newId = 'n' + (++nodeCounter);
+  const dup = { ...n, id: newId, x: n.x + 30, y: n.y + 30, imgUrl: null };
+  nodes.push(dup);
+  saveCanvasState();
+  const vp = document.getElementById('canvasVP');
+  if (vp) renderNode(dup, vp);
+  drawConnections();
+  toast('Node duplicated', 'ok');
+}
+
+function nodeTextChange(id, val) {
+  const n = nodes.find(x => x.id === id);
+  if (n) { n.text = val; saveCanvasState(); }
+}
+
+function sendNodeToStudio(id) {
+  const n = nodes.find(x => x.id === id);
+  if (!n || !n.text) { toast('Node is empty', 'er'); return; }
+  document.getElementById('vPrompt').value = n.text;
+  document.getElementById('vChar').textContent = n.text.length;
+  switchTab('video', document.querySelector('.tab-btn'));
+  toast('Prompt sent to Video Studio', 'ok');
+}
+
+function nodeUploadImg(id) {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = e => {
+    const file = e.target.files[0]; if (!file) return;
+    const r = new FileReader();
+    r.onload = ev => {
+      const n = nodes.find(x => x.id === id);
+      if (n) { n.imgUrl = ev.target.result; saveCanvasState(); }
+      const img = document.getElementById('nimg_' + id);
+      if (img) { img.src = ev.target.result; img.classList.add('show'); }
+    };
+    r.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+function clearCanvas() {
+  if (!confirm('Clear all nodes and connections?')) return;
+  nodes = []; connections = []; saveCanvasState(); renderAllNodes();
+  toast('Canvas cleared', 'ok');
+}
+
+function zoomCanvas(delta) {
+  canvasScale = Math.max(.2, Math.min(3, canvasScale + delta));
+  applyCanvasTransform();
+}
+
+function resetCanvasView() {
+  canvasScale = 1; canvasPanX = 60; canvasPanY = 60;
+  applyCanvasTransform();
+}
+
+function saveCanvasState() {
+  localStorage.setItem('cs_nodes', JSON.stringify(nodes));
+  localStorage.setItem('cs_conns', JSON.stringify(connections));
+}
+
+// Canvas mouse events — init مرة واحدة بس
+let _canvasInited = false;
+function initCanvas() {
+  const area = document.getElementById('canvasArea');
+  if (!area || _canvasInited) {
+    // لو اتعمل init قبل كده — بس refresh الـ nodes
+    renderAllNodes();
+    applyCanvasTransform();
+    return;
+  }
+  _canvasInited = true;
+
+  area.addEventListener('mousemove', e => {
+    if (isDraggingNode && dragNode) {
+      const n = nodes.find(x => x.id === dragNode);
+      const el = document.getElementById('node_' + dragNode);
+      if (!n || !el) return;
+      const aRect = area.getBoundingClientRect();
+      n.x = (e.clientX - aRect.left - canvasPanX) / canvasScale - dragOffX;
+      n.y = (e.clientY - aRect.top  - canvasPanY) / canvasScale - dragOffY;
+      el.style.left = n.x + 'px';
+      el.style.top  = n.y + 'px';
+      drawConnections();
+      return;
+    }
+    if (isPanning) {
+      canvasPanX = panStartPX + (e.clientX - panStartX);
+      canvasPanY = panStartPY + (e.clientY - panStartY);
+      applyCanvasTransform();
+    }
+  });
+
+  area.addEventListener('mouseup', e => {
+    if (isDraggingNode) { saveCanvasState(); document.getElementById('node_' + dragNode)?.classList.remove('dragging'); isDraggingNode = false; dragNode = null; }
+    if (isPanning) { isPanning = false; area.classList.remove('panning'); }
+  });
+
+  area.addEventListener('mousedown', e => {
+    if (e.target === area || e.target.id === 'canvasVP' || e.target.id === 'canvasSvg') {
+      isPanning = true;
+      panStartX = e.clientX; panStartY = e.clientY;
+      panStartPX = canvasPanX; panStartPY = canvasPanY;
+      area.classList.add('panning');
+      selectedNode = null;
+      document.querySelectorAll('.c-node').forEach(n => n.classList.remove('selected'));
+    }
+  });
+
+  area.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -.1 : .1;
+    const aRect = area.getBoundingClientRect();
+    const mx = e.clientX - aRect.left;
+    const my = e.clientY - aRect.top;
+    const newScale = Math.max(.2, Math.min(3, canvasScale + delta));
+    canvasPanX = mx - (mx - canvasPanX) * (newScale / canvasScale);
+    canvasPanY = my - (my - canvasPanY) * (newScale / canvasScale);
+    canvasScale = newScale;
+    applyCanvasTransform();
+  }, { passive: false });
+
+  // Keyboard delete
+  document.addEventListener('keydown', e => {
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedNode && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+      deleteNode(selectedNode);
+      selectedNode = null;
+    }
+  });
+
+  resetCanvasView();
+}
+
+// ═══════════════════════════════════════
+// COSTA CINEMA STUDIO 1.0
+// ═══════════════════════════════════════
+
+// ── STATE ──
+const CS = {
+  mode: 'video',   // 'image' | 'video'
+  model: null,
+  refs: [],        // [{type:'image'|'video', dataUrl, uploaded_url}]
+  chars: JSON.parse(localStorage.getItem('cs_chars') || '[]'),
+  genre: ['CYBERPUNK'],
+  busy: false,
+  url: null,
+};
+
+// Video models للـ Cinema
+const CINEMA_VIDEO_MODELS = [
+  { mk:'kling3-pro', label:'KLING 3.0 PRO', sub:'Best cinematic', t2v:'kwaivgi/kling-v3.0-pro/text-to-video', i2v:'kwaivgi/kling-v3.0-pro/image-to-video', rate:0.168 },
+  { mk:'kling3-std', label:'KLING 3.0 STD', sub:'Balanced', t2v:'kwaivgi/kling-v3.0-std/text-to-video', i2v:'kwaivgi/kling-v3.0-std/image-to-video', rate:0.126 },
+  { mk:'kling-o3',   label:'KLING O3',      sub:'Omni · Ref2V', t2v:'kwaivgi/kling-video-o3-std/text-to-video', i2v:'kwaivgi/kling-video-o3-std/image-to-video', ref2v:'kwaivgi/kling-video-o3-std/reference-to-video', rate:0.15 },
+  { mk:'sd2-fast',   label:'SEEDANCE FAST', sub:'$0.022/s cheapest', t2v:'bytedance/seedance-2.0-fast/text-to-video', i2v:'bytedance/seedance-2.0-fast/image-to-video', rate:0.022 },
+  { mk:'sd2-std',    label:'SEEDANCE STD',  sub:'High quality', t2v:'bytedance/seedance-2.0/text-to-video', i2v:'bytedance/seedance-2.0/image-to-video', rate:0.10 },
+  { mk:'hh10',       label:'HAPPYHORSE 1.0',sub:'Top benchmark', t2v:'happyhorse-1.0/text-to-video', i2v:'happyhorse-1.0/image-to-video', rate:0.14 },
+];
+
+// Image models للـ Cinema
+const CINEMA_IMAGE_MODELS = [
+  { mk:'nb2',      label:'NANO BANANA 2',  sub:'$0.013 · Flash', model:'google/nano-banana-2/text-to-image', rate:0.013 },
+  { mk:'nb-pro',   label:'NANO BANANA PRO',sub:'4K · Premium',   model:'google/nano-banana-pro/text-to-image', rate:0.05 },
+  { mk:'gpt2',     label:'GPT IMAGE 2.0',  sub:'Photorealistic', model:'gpt-image-2/text-to-image', rate:0.04 },
+  { mk:'seedream', label:'SEEDREAM 4.5',   sub:'Brand consistent',model:'seedream-4.5/text-to-image', rate:0.02 },
+  { mk:'flux-pro', label:'FLUX PRO 1.1',   sub:'Creative',       model:'flux-1.1-pro/text-to-image', rate:0.055 },
+];
+
+// ── INIT CINEMA ──
+function initCinema() {
+  renderCinemaModels();
+  renderCinemaChars();
+  updateCinemaCost();
+  // char count
+  const ta = document.getElementById('cinemaPrompt');
+  if (ta) ta.addEventListener('input', () => {
+    document.getElementById('cinemaChar').textContent = ta.value.length;
+  });
+}
+
+// ── MODE TOGGLE IMAGE / VIDEO ──
+function setCinemaMode(mode, btn) {
+  CS.mode = mode;
+  document.querySelectorAll('.cmt-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  // hide/show duration panel
+  const dp = document.getElementById('cinemaDurPanel');
+  const cp = document.getElementById('cinemaCamPanel');
+  if (dp) dp.style.display = mode === 'video' ? '' : 'none';
+  if (cp) cp.style.display = mode === 'video' ? '' : 'none';
+  renderCinemaModels();
+  updateCinemaCost();
+}
+
+// ── RENDER MODELS ──
+function renderCinemaModels() {
+  const grid = document.getElementById('cinemaModelGrid');
+  if (!grid) return;
+  const list = CS.mode === 'video' ? CINEMA_VIDEO_MODELS : CINEMA_IMAGE_MODELS;
+
+  grid.innerHTML = list.map((m, i) => `
+    <button class="mb ${i===0?'on':''}"
+      data-cmk="${m.mk}"
+      onclick="pickCinemaModel('${m.mk}')"
+      style="min-height:70px;">
+      <span class="mb-tag">${m.label}</span>
+      <span class="mb-name" style="font-size:13px;">${m.sub}</span>
+      <span class="mb-price">$${m.rate}/${CS.mode==='video'?'s':'img'}</span>
+    </button>
+  `).join('');
+
+  // default select first
+  CS.model = list[0];
+  updateCinemaCost();
+}
+
+function pickCinemaModel(mk) {
+  const list = CS.mode === 'video' ? CINEMA_VIDEO_MODELS : CINEMA_IMAGE_MODELS;
+  CS.model = list.find(m => m.mk === mk) || list[0];
+  document.querySelectorAll('#cinemaModelGrid .mb').forEach(b => {
+    b.classList.toggle('on', b.dataset.cmk === mk);
+  });
+  updateCinemaCost();
+}
+
+// ── COST ──
+function updateCinemaCost() {
+  const el = document.getElementById('cinemaCost');
+  if (!el || !CS.model) return;
+  let cost;
+  if (CS.mode === 'video') {
+    const dur = parseInt(document.getElementById('cinemaDur')?.value || 10);
+    cost = CS.model.rate * dur;
+  } else {
+    cost = CS.model.rate;
+  }
+  el.textContent = '$' + cost.toFixed(3);
+}
+
+// ── GENRE ──
+function toggleGenre(el) {
+  el.classList.toggle('on');
+  CS.genre = [...document.querySelectorAll('.genre-pill.on')].map(p => p.textContent);
+}
+
+// ── REFERENCES ──
+function addCinemaRef(type) {
+  document.getElementById(type === 'image' ? 'cinemaImgIn' : 'cinemaVideoIn').click();
+}
+
+function handleCinemaRef(e, type) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    CS.refs.push({ type, dataUrl: ev.target.result, name: file.name });
+    renderCinemaRefs();
+    updateModeBadgeCinema();
+    toast(type === 'image' ? '📎 Image added' : '🎬 Video added', 'ok');
+  };
+  r.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function renderCinemaRefs() {
+  const grid = document.getElementById('cinemaRefsGrid');
+  const empty = document.getElementById('cinemaRefsEmpty');
+  if (!grid) return;
+
+  if (!CS.refs.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  grid.innerHTML = CS.refs.map((ref, i) => `
+    <div class="cinema-ref-slot">
+      ${ref.type === 'image'
+        ? `<img src="${ref.dataUrl}" alt="">`
+        : `<video src="${ref.dataUrl}" muted playsinline loop onmouseenter="this.play()" onmouseleave="this.pause()"></video>`
+      }
+      <span class="ref-type-badge">${ref.type === 'image' ? 'IMG' : 'VID'}</span>
+      <button class="crs-rmv" onclick="removeCinemaRef(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeCinemaRef(i) {
+  CS.refs.splice(i, 1);
+  renderCinemaRefs();
+  updateModeBadgeCinema();
+}
+
+function updateModeBadgeCinema() {
+  const badge = document.getElementById('cinemaModeBadge');
+  if (badge) badge.style.display = CS.refs.length ? 'block' : 'none';
+}
+
+// ── AUTO BUILD PROMPT ──
+function buildCinemaPrompt() {
+  const ta = document.getElementById('cinemaPrompt');
+  if (!ta) return;
+
+  const body   = document.getElementById('cinemaCamBody')?.value  || 'ARRI ALEXA 35';
+  const lens   = document.getElementById('cinemaCamLens')?.value  || 'Anamorphic';
+  const move   = document.getElementById('cinemaCamMove')?.value  || 'Dolly In';
+  const dof    = document.getElementById('cinemaCamDof')?.value   || 'Shallow';
+  const genres = CS.genre.join(', ');
+
+  const existing = ta.value.trim();
+  const camStr = `\n\n[CAMERA: ${body} · ${lens} · ${move} · ${dof} DoF · ${genres} aesthetic · cinematic lighting · ultra-detailed · professional color grade]`;
+
+  if (!existing.includes('[CAMERA:')) {
+    ta.value = existing + camStr;
+    document.getElementById('cinemaChar').textContent = ta.value.length;
+    toast('⚙ Camera params injected', 'ok');
+  } else {
+    toast('Camera params already in prompt', 'er');
+  }
+}
+
+// ── CHARACTERS ──
+function renderCinemaChars() {
+  const container = document.getElementById('charChips');
+  if (!container) return;
+  container.innerHTML = CS.chars.map((c, i) => `
+    <div class="char-chip" onclick="insertCharTag('${c.tag}')">
+      <div class="char-avatar">
+        ${c.imgUrl ? `<img src="${c.imgUrl}" alt="">` : c.name.charAt(0)}
+      </div>
+      <div>
+        <div class="char-name">${c.name}</div>
+        <div class="char-tag">${c.tag}</div>
+      </div>
+      <button class="char-del" onclick="deleteChar(event,${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function insertCharTag(tag) {
+  const ta = document.getElementById('cinemaPrompt');
+  if (!ta) return;
+  const pos = ta.selectionStart;
+  ta.value = ta.value.slice(0, pos) + tag + ' ' + ta.value.slice(pos);
+  ta.focus();
+  document.getElementById('cinemaChar').textContent = ta.value.length;
+  toast(`${tag} inserted`, 'ok');
+}
+
+function deleteChar(e, i) {
+  e.stopPropagation();
+  CS.chars.splice(i, 1);
+  localStorage.setItem('cs_chars', JSON.stringify(CS.chars));
+  renderCinemaChars();
+}
+
+let _charImgData = null;
+function openCharModal() {
+  _charImgData = null;
+  document.getElementById('charImgPreview').style.display = 'none';
+  document.getElementById('charImgIcon').style.display = 'block';
+  ['charName','charTag','charDesc','charGender','charAge','charOutfit','charDistinct']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('charModal').style.display = 'flex';
+}
+
+function closeCharModal(e) {
+  if (!e || e.target.id === 'charModal') {
+    document.getElementById('charModal').style.display = 'none';
+  }
+}
+
+function previewCharImg(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    _charImgData = ev.target.result;
+    const img = document.getElementById('charImgPreview');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('charImgIcon').style.display = 'none';
+  };
+  r.readAsDataURL(file);
+}
+
+function saveCharacter() {
+  const name = document.getElementById('charName').value.trim().toUpperCase();
+  const tag  = document.getElementById('charTag').value.trim().replace(/^@*/,'');
+  if (!name || !tag) { toast('Name and @tag required', 'er'); return; }
+
+  const desc     = document.getElementById('charDesc').value.trim();
+  const gender   = document.getElementById('charGender').value.trim();
+  const age      = document.getElementById('charAge').value.trim();
+  const outfit   = document.getElementById('charOutfit').value.trim();
+  const distinct = document.getElementById('charDistinct').value.trim();
+
+  const fullDesc = [desc, gender&&`Gender: ${gender}`, age&&`Age: ${age}`, outfit&&`Outfit: ${outfit}`, distinct&&`Feature: ${distinct}`].filter(Boolean).join('. ');
+
+  CS.chars.push({ name, tag: '@'+tag, imgUrl: _charImgData, desc: fullDesc });
+  localStorage.setItem('cs_chars', JSON.stringify(CS.chars));
+  renderCinemaChars();
+  closeCharModal();
+  toast(`✓ ${name} saved`, 'ok');
+}
+
+// ── GENERATE CINEMA ──
+async function generateCinema() {
+  if (CS.busy) return;
+  if (!S.key) { document.getElementById('apiBanner').style.display = 'block'; toast('Connect Atlas API key first','er'); return; }
+
+  const prompt = document.getElementById('cinemaPrompt').value.trim();
+  if (!prompt) { toast('Write your scene description', 'er'); return; }
+  if (!CS.model) { toast('Select a model', 'er'); return; }
+
+  CS.busy = true;
+  const btn = document.getElementById('cinemaGenBtn');
+  btn.classList.add('ld'); btn.textContent = '★ GENERATING...';
+
+  const showP = (pct, st) => showProgGeneric('cinema', pct, st);
+  showP(5, 'CONNECTING');
+
+  try {
+    let cost, url;
+
+    if (CS.mode === 'video') {
+      const dur   = parseInt(document.getElementById('cinemaDur').value);
+      const res   = document.getElementById('cinemaRes').value;
+      const ratio = document.getElementById('cinemaRatio').value;
+      cost = CS.model.rate * dur;
+
+      // Smart routing
+      const imgRefs = CS.refs.filter(r => r.type === 'image');
+      const vidRefs = CS.refs.filter(r => r.type === 'video');
+      let modelEndpoint = CS.model.t2v;
+      if (imgRefs.length >= 2 && CS.model.ref2v) modelEndpoint = CS.model.ref2v;
+      else if (imgRefs.length >= 1) modelEndpoint = CS.model.i2v;
+
+      const payload = { model: modelEndpoint, prompt, duration: dur, resolution: res, ratio, generate_audio: true, watermark: false };
+
+      // Upload refs
+      if (imgRefs[0]) {
+        showP(12, 'UPLOADING REF IMAGE');
+        payload.image_url = await atlasUploadBase64(imgRefs[0].dataUrl, S.key);
+      }
+      if (imgRefs[1]) payload.end_image_url = await atlasUploadBase64(imgRefs[1].dataUrl, S.key);
+
+      showP(25, 'SUBMITTING');
+      const r = await fetch(`${ATLAS_BASE}/generateVideo`, {
+        method:'POST',
+        headers:{'Authorization':'Bearer '+S.key,'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message||e.error||`HTTP ${r.status}`); }
+      const d = await r.json();
+      const predId = d?.data?.id || d?.id;
+      if (!predId) throw new Error('No prediction ID');
+
+      showP(35, 'GENERATING FRAMES');
+      const result = await atlasPoll(predId, S.key, 'cinema', 35);
+      url = (result?.outputs && result.outputs[0])
+          || result?.output?.video_url
+          || result?.output?.url
+          || result?.video_url
+          || result?.url;
+      if (!url) throw new Error('No video URL returned');
+
+      // show video
+      CS.url = url;
+      const vid = document.getElementById('cinemaVid');
+      const img = document.getElementById('cinemaImg');
+      vid.src = url; vid.classList.add('show'); vid.style.display = 'block';
+      img.style.display = 'none';
+      document.getElementById('cinemaPH').style.display = 'none';
+      document.getElementById('cinemaMMode').textContent = imgRefs.length ? 'I2V' : 'T2V';
+
+    } else {
+      // IMAGE MODE
+      cost = CS.model.rate;
+      const imgRefs = CS.refs.filter(r => r.type === 'image');
+      const payload = { model: CS.model.model, prompt };
+      if (imgRefs[0]) {
+        showP(12, 'UPLOADING REF');
+        payload.image_url = await atlasUploadBase64(imgRefs[0].dataUrl, S.key);
+      }
+      showP(25, 'GENERATING IMAGE');
+      const r = await fetch(`${ATLAS_BASE}/generateImage`, {
+        method:'POST',
+        headers:{'Authorization':'Bearer '+S.key,'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.message||e.error||`HTTP ${r.status}`); }
+      const d = await r.json();
+      const predId = d?.data?.id || d?.id;
+      if (!predId) throw new Error('No prediction ID');
+
+      showP(35, 'GENERATING');
+      const result = await atlasPoll(predId, S.key, 'cinema', 35);
+      const imgs = result?.output?.images || result?.images || [];
+      url = (result?.outputs && result.outputs[0])
+          || (Array.isArray(imgs) ? imgs[0]?.url || imgs[0] : null)
+          || result?.output?.image_url
+          || result?.url;
+      if (!url) throw new Error('No image URL returned');
+
+      CS.url = url;
+      const img = document.getElementById('cinemaImg');
+      const vid = document.getElementById('cinemaVid');
+      img.src = url; img.classList.add('show'); img.style.display = 'block';
+      vid.style.display = 'none';
+      document.getElementById('cinemaPH').style.display = 'none';
+      document.getElementById('cinemaMMode').textContent = 'IMAGE';
+    }
+
+    document.getElementById('cinemaProg').classList.remove('show');
+    document.getElementById('cinemaDlBtn').disabled = false;
+    document.getElementById('cinemaCorner').textContent = CS.model.mk.toUpperCase();
+    document.getElementById('cinemaCorner').className = 'out-corner red';
+    document.getElementById('cinemaMModel').textContent = CS.model.label;
+    document.getElementById('cinemaMCost').textContent = '$' + cost.toFixed(3);
+    addCinemaHist(prompt, url, cost);
+    fetchAllBalances();
+    toast(`✓ Done — $${cost.toFixed(3)}`, 'ok');
+
+  } catch(err) {
+    document.getElementById('cinemaProg').classList.remove('show');
+    console.error(err);
+    toast(err.message || 'Generation failed', 'er');
+  } finally {
+    CS.busy = false;
+    btn.classList.remove('ld');
+    btn.textContent = '★ GENERATE';
+  }
+}
+
+// ── showProg generic (for cinema tab) ──
+function showProgGeneric(tab, pct, st) {
+  if (tab === 'cinema') {
+    const ov  = document.getElementById('cinemaProg');
+    const fl  = document.getElementById('cinemaFill');
+    const pe  = document.getElementById('cinemaPct');
+    const se  = document.getElementById('cinemaSt');
+    if (!ov) return;
+    ov.classList.add('show');
+    document.getElementById('cinemaPH').style.display = 'none';
+    const c = 2*Math.PI*36, d = (pct/100)*c;
+    if (fl) fl.style.strokeDasharray = d+' '+(c-d);
+    if (pe) pe.textContent = pct+'%';
+    if (se) se.textContent = st;
+  } else {
+    showProg(tab, pct, st);
+  }
+}
+
+// ── DOWNLOAD / COPY ──
+function dlCinema() {
+  if (!CS.url) return;
+  const a = document.createElement('a');
+  a.href = CS.url;
+  a.download = 'cinema-'+Date.now()+(CS.mode==='video'?'.mp4':'.png');
+  a.target = '_blank'; a.click();
+}
+function copyUrlCinema() {
+  if (!CS.url) { toast('No output yet','er'); return; }
+  navigator.clipboard.writeText(CS.url).then(()=>toast('URL copied','ok'));
+}
+
+// ── HISTORY ──
+let cinemaHist = JSON.parse(localStorage.getItem('cs_ch')||'[]');
+function addCinemaHist(prompt, url, cost) {
+  cinemaHist.unshift({ id:Date.now(), prompt, url, cost, mode:CS.mode, mk:CS.model?.mk||'' });
+  if (cinemaHist.length > 20) cinemaHist.pop();
+  localStorage.setItem('cs_ch', JSON.stringify(cinemaHist));
+  renderCinemaHist();
+}
+function renderCinemaHist() {
+  const grid = document.getElementById('cinemaHistGrid');
+  if (!grid) return;
+  if (!cinemaHist.length) { grid.innerHTML='<div class="hi-empty">No generations yet</div>'; return; }
+  grid.innerHTML = cinemaHist.map(h=>`
+    <div class="hi" onclick="loadCinemaHist('${h.id}')">
+      <div class="hi-thumb">
+        ${h.url ? (h.mode==='video'
+          ? `<video src="${h.url}" muted playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0"></video>`
+          : `<img src="${h.url}" alt="">`)
+          : '<div class="hi-ph"></div>'}
+      </div>
+      <div class="hi-info">
+        <div class="hi-model">${(h.mk||'').toUpperCase()} · ${(h.mode||'').toUpperCase()}</div>
+        <div class="hi-prompt">${h.prompt}</div>
+        <div class="hi-cost">$${h.cost.toFixed(3)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function loadCinemaHist(id) {
+  const h = cinemaHist.find(x=>x.id==id); if (!h||!h.url) return;
+  CS.url = h.url;
+  document.getElementById('cinemaPrompt').value = h.prompt;
+  document.getElementById('cinemaChar').textContent = h.prompt.length;
+  if (h.mode === 'video') {
+    const vid = document.getElementById('cinemaVid');
+    vid.src = h.url; vid.style.display='block'; vid.classList.add('show');
+    document.getElementById('cinemaImg').style.display='none';
+  } else {
+    const img = document.getElementById('cinemaImg');
+    img.src = h.url; img.style.display='block'; img.classList.add('show');
+    document.getElementById('cinemaVid').style.display='none';
+  }
+  document.getElementById('cinemaPH').style.display='none';
+}
+
+// ── Raise prompt limit on video/image tabs to 4000 ──
+document.addEventListener('DOMContentLoaded', () => {
+  ['vPrompt','iPrompt'].forEach(id => {
+    const ta = document.getElementById(id);
+    if (ta) ta.maxLength = 4000;
+  });
+  const vc = document.getElementById('vChar');
+  const ic = document.getElementById('iChar');
+  document.querySelectorAll('.char-count').forEach(el => {
+    if (el.querySelector('#vChar')) el.lastChild.textContent = '/4000';
+    if (el.querySelector('#iChar')) el.lastChild.textContent = '/4000';
+  });
+});
+
+// ═══════════════════════════════════════
+// ═══════════════════════════════════════
+const AR_DIMS = {
+  '9:16': [42, 75], '16:9': [75, 42], '1:1': [60, 60],
+  '4:5': [52, 65],  '21:9': [84, 36]
+};
+
+function renderARPreview() {
+  const ratioSel = document.getElementById('vRatio');
+  const preview  = document.getElementById('arPreviewBox');
+  if (!preview || !ratioSel) return;
+  const val = ratioSel.value;
+  const [w, h] = AR_DIMS[val] || [60, 60];
+  preview.style.width  = w + 'px';
+  preview.style.height = h + 'px';
+  document.getElementById('arLabel').textContent = val;
+}
+
+// ═══════════════════════════════════════
+// PATCH switchTab for new tabs
+// ═══════════════════════════════════════
+const __switchTab = switchTab;
+switchTab = function(tab, btn) {
+  ['video','image','cinema','apis','calc','prompts','canvas'].forEach(t => {
+    const el = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (el) el.style.display = t === tab ? '' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const heroMap = {
+    video:   ['GENERATE<br><span class="ac">CINEMATIC</span><br>AI VIDEO', 'Seedance 2.0, Kling 3.0, Veo 3.1 — pay per generation'],
+    image:   ['GENERATE<br><span class="ac">STUNNING</span><br>AI IMAGES', 'Nano Banana, GPT Image 2.0, Flux — instant results'],
+    cinema:  ['COSTA<br><span class="ac">CINEMA</span><br>STUDIO 1.0', 'Full production suite — Characters · Camera · Genre · Unlimited refs'],
+    calc:    ['ATLAS CLOUD<br><span class="ac">COST</span><br>CALCULATOR', 'Real pricing — how many videos per dollar'],
+    prompts: ['PROMPT<br><span class="ac">LIBRARY</span>', 'Save, reuse, and build shots instantly'],
+    canvas:  ['WORKFLOW<br><span class="ac">CANVAS</span>', 'Drag & drop nodes — connect your creative pipeline'],
+    apis:    ['API<br><span class="ac">PROVIDERS</span>', 'Manage API connections'],
+  };
+  const h = heroMap[tab] || heroMap.video;
+  const ht = document.getElementById('heroTitle');
+  const hs = document.getElementById('heroSub');
+  if (ht) ht.innerHTML = h[0];
+  if (hs) hs.textContent = h[1];
+
+  if (tab === 'canvas')  { setTimeout(() => { initCanvas(); renderAllNodes(); applyCanvasTransform(); }, 50); }
+  if (tab === 'calc')    calcUpdate();
+  if (tab === 'prompts') { renderPromptLib(); renderQuickTemplates(); renderShotBuilder(); }
+  if (tab === 'cinema')  { setTimeout(() => { initCinema(); renderCinemaHist(); }, 50); }
+
+  ['tabCalc','tabPrompts','tabCanvas','tabCinema'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.style.display !== 'none') {
+      el.classList.remove('tab-content-enter');
+      void el.offsetWidth;
+      el.classList.add('tab-content-enter');
+    }
+  });
+};
+
+// ═══════════════════════════════════════
+// INIT ALL NEW FEATURES
+// ═══════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  // Inject AR preview before vRatio select
+  setTimeout(() => {
+    const ratioSel = document.getElementById('vRatio');
+    if (ratioSel) {
+      const prev = document.createElement('div');
+      prev.className = 'ar-preview';
+      prev.innerHTML = `
+        <div class="ar-box" id="arPreviewBox" style="width:42px;height:75px;"></div>
+        <div>
+          <div class="ar-label">ASPECT RATIO</div>
+          <div class="ar-value" id="arLabel">9:16</div>
+        </div>
+      `;
+      const wrap = ratioSel.closest('.sg') || ratioSel.parentNode;
+      wrap.parentNode.insertBefore(prev, wrap.parentNode.querySelector('.aud-row'));
+      ratioSel.addEventListener('change', renderARPreview);
+      renderARPreview();
+    }
+
+    initAllSelects();
+    calcUpdate();
+    renderPromptLib();
+  }, 300);
+});
+
+// ── AUTO REFRESH EVERY 60s ──
+setInterval(() => { if (S.key) fetchAllBalances(); }, 60000);
+
+// ── REAL COST FROM RESPONSE ──
+// fal.ai بيرجع cost في data.metrics أو data.billing
+function extractCost(data, fallbackCost) {
+  // محاولة قراءة التكلفة الحقيقية من الـ Response
+  const real =
+    data?.billing?.cost ??
+    data?.billing?.total_cost ??
+    data?.metrics?.cost ??
+    data?.usage?.cost ??
+    data?.cost ??
+    null;
+  if (real !== null && !isNaN(parseFloat(real))) {
+    return parseFloat(real);
+  }
+  // fallback للتقدير المحسوب
+  return fallbackCost;
+}
+
+// ── ATLAS لا يوفر pricing estimate endpoint — بنستخدم الـ local rate ──
+async function fetchModelPrice(modelId, quantity) {
+  return null; // Atlas مش عندهم pricing estimate API زي fal
+}
+
+// ── PROVIDERS ──
+function renderProviders() {
+  const list=document.getElementById('provList');
+  if (!S.providers.length) {
+    list.innerHTML='<div class="hi-empty" style="padding:28px 0;">No providers added yet — add one below</div>';
+    return;
+  }
+  list.innerHTML=S.providers.map((p,i)=>`
+    <div class="provider-card ${p.active?'active-prov':''}">
+      <div class="prov-info">
+        <div class="prov-name">${p.name}</div>
+        <div class="prov-url">${p.base}</div>
+      </div>
+      <span class="prov-status connected">CONNECTED</span>
+      <button class="prov-del" onclick="delProvider(${i})">DELETE</button>
+    </div>
+  `).join('');
+}
+
+function addProvider() {
+  const name=document.getElementById('newProvName').value.trim();
+  const base=document.getElementById('newProvBase').value.trim();
+  const key=document.getElementById('newProvKey').value.trim();
+  if (!name||!base) { toast('Name and URL required','er'); return; }
+  S.providers.push({name,base,key:key||S.key,active:true});
+  localStorage.setItem('cs_prov',JSON.stringify(S.providers));
+  if (key) {
+    S.key=key;
+    localStorage.setItem('cs_key',key);
+    document.getElementById('apiIn').value=key;
+    setSt(true);
+    fetchAllBalances();
+  }
+  document.getElementById('newProvName').value='';
+  document.getElementById('newProvBase').value='';
+  document.getElementById('newProvKey').value='';
+  renderProviders();
+  toast(`${name} connected ✓`,'ok');
+}
+
+function delProvider(i) {
+  S.providers.splice(i,1);
+  localStorage.setItem('cs_prov',JSON.stringify(S.providers));
+  renderProviders();
+  toast('Provider removed','ok');
+}
+
+function quickAdd(name, base) {
+  document.getElementById('newProvName').value=name;
+  document.getElementById('newProvBase').value=base;
+  document.getElementById('newProvKey').focus();
+  toast(`Fill your ${name} API key and click ADD`,'ok');
+}
+
+// ── TOAST ──
+function toast(msg, type='') {
+  const c=document.getElementById('tc');
+  const t=document.createElement('div');
+  t.className='toast '+(type||''); t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateY(8px)'; t.style.transition='all .25s'; setTimeout(()=>t.remove(),250); },3000);
+}
+
+// ── AUTO REFRESH BALANCE EVERY 60s ──
+setInterval(()=>{ if (S.key) fetchAllBalances(); }, 60000);
+</script>
+<script src="patches-final.js"></script>
+</body>
+</html>
